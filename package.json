@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "compile-content": "node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/compileContent.ts"
   },
   "dependencies": {
     "next": "12.2.3",
@@ -20,6 +21,7 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.20.0",
     "eslint-config-next": "12.2.3",
+    "ts-node": "^10.9.1",
     "typescript": "4.7.4"
   }
 }

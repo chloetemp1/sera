@@ -1,7 +1,47 @@
-import { parse } from 'yaml';
+interface ContentEdge {
+    short: string;
+    long: string;
+}
 
-function parseGraph() {
-    /* Lol need to work out how to import the yaml files cause it's client side.
-    Worst case could just add a node.js build step that converts the YAML files into importable TS objects and the MD files into strings */
-    parse('');
+interface MarkdownDoc {
+    text: string;
+}
+
+export enum QuestionNode {
+    age,
+}
+
+export enum AnswerEdge {
+    ageYoung,
+    ageMid,
+    ageOlder,
+    ageMixed,
+}
+
+interface GraphDefinition {
+    nodes: Record<QuestionNode, {
+        edges: Record<AnswerEdge, {
+            next: QuestionNode;
+            run: string;
+        }>[];
+    }>;
+    startNode: QuestionNode;
+}
+
+// TODO autogen this?
+export interface Content {
+    edgesAgeMid: ContentEdge;
+    edgesAgeMixed: ContentEdge;
+    edgesAgeOlder: ContentEdge;
+    edgesAgeYoung: ContentEdge;
+    nodesAge: MarkdownDoc;
+    summaryAgeMid: MarkdownDoc;
+    summaryAgeOlder: MarkdownDoc;
+    summaryAgeYoung: MarkdownDoc;
+    graphGraph: GraphDefinition;
+}
+
+export default function parseGraph(content: Content) {
+    const graph = content.graphGraph;
+    return graph;
 }

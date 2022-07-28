@@ -1,13 +1,6 @@
-enum QuestionNode {
-    age,
-}
+import * as content from './content-compiled/graphData';
 
-enum AnswerEdge {
-    ageYoung,
-    ageMid,
-    ageOlder,
-    ageMixed,
-}
+import parseGraph, { Content, QuestionNode } from './parser';
 
 interface UserContext {
     node: QuestionNode;
@@ -19,7 +12,7 @@ interface AppContext {
 }
 
 function run() {
-    const parsedGraph = parse();
+    const parsedGraph = parseGraph(content as unknown as Content);
 
     const userContext: UserContext = {
         node: parsedGraph.startNode,
