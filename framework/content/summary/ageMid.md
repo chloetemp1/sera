@@ -1,0 +1,1 @@
+Your cohort is primarily composed of adults, which means you can avoid many of the issues relating to working with underage participants.
