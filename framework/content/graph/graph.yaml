@@ -1,17 +1,21 @@
 nodes:
   age:
     edges:
-      - ageYoung:
-          next: summary
-          run: set('age', 'young')
-      - ageMid:
-          next: summary
-          run: set('age', 'mid')
-      - ageOlder:
-          next: summary
-          run: set('age', 'older')
-      - ageMixed:
-          next: summary
-          run: set('age', 'mixed')
+      ageYoung:
+        next: summary
+        run:
+            - setString: ['age', 'young']
+      ageMid:
+        next: summary
+        run:
+            - setString: ['age', 'mid']
+      ageOlder:
+        next: summary
+        run:
+            - setString: ['age', 'older']
+      ageMixed:
+        next: summary
+        run:
+            - setString: ['age', 'mixed']
 
 startNode: age

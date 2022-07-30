@@ -8,22 +8,26 @@ interface MarkdownDoc {
 }
 
 export enum QuestionNode {
-    age,
+    age = "age",
 }
 
 export enum AnswerEdge {
-    ageYoung,
-    ageMid,
-    ageOlder,
-    ageMixed,
+    ageYoung = "ageYoung",
+    ageMid = "ageMid",
+    ageOlder = "ageOlder",
+    ageMixed = "ageMixed",
 }
 
-interface GraphDefinition {
+export type UserFunctionName = 'setString' | 'setBool';
+
+export type UserFunctionMap = Record<UserFunctionName, string[]>;
+
+export interface GraphDefinition {
     nodes: Record<QuestionNode, {
         edges: Record<AnswerEdge, {
             next: QuestionNode;
-            run: string;
-        }>[];
+            run: UserFunctionMap[];
+        }>;
     }>;
     startNode: QuestionNode;
 }
