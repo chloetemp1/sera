@@ -1,4 +1,4 @@
-interface ContentEdge {
+export interface ContentEdge {
     short: string;
     long: string;
 }

@@ -17,5 +17,7 @@ nodes:
         next: summary
         run:
             - setString: ['age', 'mixed']
+  summary:
+    edges:
 
 startNode: age

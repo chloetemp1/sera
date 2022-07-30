@@ -3,6 +3,7 @@ import * as content from "./content-compiled/graphData";
 import parseGraph, {
   AnswerEdge,
   Content,
+  ContentEdge,
   GraphDefinition,
   QuestionNode,
   UserFunctionMap,
@@ -26,6 +27,7 @@ const firstToUpper: (text: string) => string = (text) =>
 export class Runner {
   parsedGraph: GraphDefinition;
   appContext: AppContext;
+  onUpdate: () => void;
 
   userFunctions: Record<UserFunctionName, Function> = {
     setString: (key: string, value: string) => userFunctionSetString(this.appContext.currentUserCtx, key, value),
@@ -43,6 +45,8 @@ export class Runner {
       currentUserCtx: userContext,
       historicalUserCtx: [],
     };
+
+    this.onUpdate = () => {};
   }
 
   getCurrentNodeId() {
@@ -58,9 +62,13 @@ export class Runner {
     return content[`nodes${firstToUpper(this.getCurrentNodeId())}`].text;
   }
 
-  getEdgeContent(edgeId: string) {
+  getEdgeContent(edgeId: string): ContentEdge {
     // @ts-ignore
     return content[`edges${firstToUpper(edgeId)}`];
+  }
+
+  setListener(listener: () => void) {
+    this.onUpdate = listener;
   }
 
   makeSelection(edgeId: AnswerEdge) {
@@ -77,6 +85,8 @@ export class Runner {
 
     // Move to the next node
     this.appContext.currentUserCtx.node = selectedEdge.next;
+
+    this.onUpdate();
   }
 
   runFunctions(userFunctions: UserFunctionMap[]) {
