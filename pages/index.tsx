@@ -7,10 +7,8 @@ import Results from "./Results";
 import content from '../framework/compiledContent';
 import { BestPracticeKind, Cohort } from "../shared/sharedTypes";
 
-console.log(content);
-
 const Home: NextPage = () => {
-  const [filterCohorts, setFilterCohorts] = useState<Set<Cohort>>(new Set());
+  const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());
 
   const [filterBestPracticesKinds, setFilterBestPracticesKinds] = useState<
     Set<BestPracticeKind>
@@ -37,6 +35,7 @@ const Home: NextPage = () => {
         </p>
 
         <Filters
+          cohorts={content.cohorts}
           filterCohorts={filterCohorts}
           setFilterCohorts={setFilterCohorts}
           filterBestPracticesKinds={filterBestPracticesKinds}

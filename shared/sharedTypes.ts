@@ -45,10 +45,10 @@ interface BaseBestPractice {
   contentMarkdown: string;
   upvoteCount: number;
   downvoteCount: number;
+  cohorts: string[]; // ids of cohorts
 }
 
 export interface ResearcherBestPractice extends BaseBestPractice {
-  cohorts: ResearcherCohort[];
   creatorType: CreatorType.ORIGINAL_RESEARCHERS;
   creatorUserId: null;
   submittedDate: null;
@@ -56,7 +56,6 @@ export interface ResearcherBestPractice extends BaseBestPractice {
 }
 
 export interface UserContributedBestPractice extends BaseBestPractice {
-  cohorts: Cohort[];
   creatorType: CreatorType.USER_CONTRIBUTED;
   creatorUserId: string; // uuid
   submittedDate: Date;
