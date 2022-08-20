@@ -2,10 +2,20 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Filters from "./Filters";
+import { useState } from "react";
+import Results from "./Results";
+import content from '../framework/compiledContent';
+import { BestPracticeKind, Cohort } from "../shared/sharedTypes";
+
+console.log(content);
 
 const Home: NextPage = () => {
-  const [] = useState();
-  
+  const [filterCohorts, setFilterCohorts] = useState<Set<Cohort>>(new Set());
+
+  const [filterBestPracticesKinds, setFilterBestPracticesKinds] = useState<
+    Set<BestPracticeKind>
+  >(new Set());
+
   return (
     <div className={styles.container}>
       <Head>
@@ -26,7 +36,18 @@ const Home: NextPage = () => {
           best practices for conducting research with various user cohorts.
         </p>
 
-      <Filters />
+        <Filters
+          filterCohorts={filterCohorts}
+          setFilterCohorts={setFilterCohorts}
+          filterBestPracticesKinds={filterBestPracticesKinds}
+          setFilterBestPracticesKinds={setFilterBestPracticesKinds}
+        />
+
+        <Results
+          content={content}
+          filterCohorts={filterCohorts}
+          filterBestPracticesKinds={filterBestPracticesKinds}
+        />
       </main>
     </div>
   );
