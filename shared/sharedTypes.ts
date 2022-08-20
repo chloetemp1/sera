@@ -1,6 +1,6 @@
 /** Helpers */
 
-enum CreatorType {
+export enum CreatorType {
   ORIGINAL_RESEARCHERS = "ORIGINAL_RESEARCHERS",
   USER_CONTRIBUTED = "USER_CONTRIBUTED",
 }
@@ -14,23 +14,23 @@ interface BaseCohort {
   categoryName: string | null; // ignored if parentCohortId is present
 }
 
-interface ResearcherCohort extends BaseCohort {
+export interface ResearcherCohort extends BaseCohort {
   creatorType: CreatorType.ORIGINAL_RESEARCHERS;
   creatorUserId: null;
   submittedDate: null;
 }
 
-interface UserContributedCohort extends BaseCohort {
+export interface UserContributedCohort extends BaseCohort {
   creatorType: CreatorType.USER_CONTRIBUTED;
   creatorUserId: string; // uuid
   submittedDate: Date;
 }
 
-type Cohort = ResearcherCohort | UserContributedCohort;
+export type Cohort = ResearcherCohort | UserContributedCohort;
 
 /** Best practices */
 
-enum BestPracticeKind {
+export enum BestPracticeKind {
   METHODOLOGY = "METHODOLOGY",
   TOOL = "TOOL",
   CASE_STUDY = "CASE_STUDY",
@@ -47,7 +47,7 @@ interface BaseBestPractice {
   downvoteCount: number;
 }
 
-interface ResearcherBestPractice extends BaseBestPractice {
+export interface ResearcherBestPractice extends BaseBestPractice {
   cohorts: ResearcherCohort[];
   creatorType: CreatorType.ORIGINAL_RESEARCHERS;
   creatorUserId: null;
@@ -55,7 +55,7 @@ interface ResearcherBestPractice extends BaseBestPractice {
   editedDate: null;
 }
 
-interface UserContributedBestPractice extends BaseBestPractice {
+export interface UserContributedBestPractice extends BaseBestPractice {
   cohorts: Cohort[];
   creatorType: CreatorType.USER_CONTRIBUTED;
   creatorUserId: string; // uuid
@@ -63,23 +63,23 @@ interface UserContributedBestPractice extends BaseBestPractice {
   editedDate: Date | null;
 }
 
-type BestPractice = ResearcherBestPractice | UserContributedBestPractice;
+export type BestPractice = ResearcherBestPractice | UserContributedBestPractice;
 
 /** User */
 
-interface User {
+export interface User {
   id: string; // uuidv4
   cognitoId: string;
 }
 
 /** Interactions */
 
-enum InteractionKind {
+export enum InteractionKind {
   COMMENT = "COMMENT",
   VOTE = "VOTE",
 }
 
-enum VoteKind {
+export enum VoteKind {
   UP = "UP",
   DOWN = "DOWN",
 }
@@ -90,29 +90,36 @@ interface BaseInteraction {
   submittedDate: Date;
 }
 
-interface CommentInteraction extends BaseInteraction {
+export interface CommentInteraction extends BaseInteraction {
   kind: InteractionKind.COMMENT;
   commentText: string;
   editedDate: Date | null;
 }
 
-interface VoteInteraction extends BaseInteraction {
+export interface VoteInteraction extends BaseInteraction {
   kind: InteractionKind.VOTE;
   voteKind: VoteKind;
 }
 
-type Interaction = CommentInteraction | VoteInteraction;
+export type Interaction = CommentInteraction | VoteInteraction;
 
 /** Types for markdown */
 
 // Cohort expressed in a markdown doc to be compiled
-type ResearcherCohortMarkdown = Pick<
+export type ResearcherCohortMarkdown = Pick<
   ResearcherCohort,
-  "name" | "parentCohortId" | "categoryName"
+  "name" | "parentCohortId" | "categoryName" | "id"
 >;
 
 // Best practice expressed in a markdown doc to be compiled
-type ResearcherBestPracticeMarkdown = Pick<
+export type ResearcherBestPracticeMarkdown = Pick<
   ResearcherBestPractice,
-  "title" | "kind" | "contentMarkdown" | "cohorts"
+  "title" | "kind" | "contentMarkdown" | "cohorts" | "id"
 >;
+
+/** Overall compiled content */
+
+export interface CompiledContent {
+    cohorts: ResearcherCohort[];
+    bestPractices: ResearcherBestPractice[];
+}
