@@ -1,8 +1,8 @@
 /** Helpers */
 
 enum CreatorType {
-  ORIGINAL_RESEARCHERS,
-  USER_CONTRIBUTED,
+  ORIGINAL_RESEARCHERS = "ORIGINAL_RESEARCHERS",
+  USER_CONTRIBUTED = "USER_CONTRIBUTED",
 }
 
 /** Cohorts */
@@ -31,11 +31,11 @@ type Cohort = ResearcherCohort | UserContributedCohort;
 /** Best practices */
 
 enum BestPracticeKind {
-  METHODOLOGY,
-  TOOL,
-  CASE_STUDY,
-  NOTE_OF_CAUTION,
-  OTHER,
+  METHODOLOGY = "METHODOLOGY",
+  TOOL = "TOOL",
+  CASE_STUDY = "CASE_STUDY",
+  NOTE_OF_CAUTION = "NOTE_OF_CAUTION",
+  OTHER = "OTHER",
 }
 
 interface BaseBestPractice {
@@ -75,13 +75,13 @@ interface User {
 /** Interactions */
 
 enum InteractionKind {
-  COMMENT,
-  VOTE,
+  COMMENT = "COMMENT",
+  VOTE = "VOTE",
 }
 
 enum VoteKind {
-  UP,
-  DOWN,
+  UP = "UP",
+  DOWN = "DOWN",
 }
 
 interface BaseInteraction {
