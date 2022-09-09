@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "compile-content": "node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/compileContent.ts"
+    "compile-content": "node ./tools/copyConfig.js && node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/compileContent.ts"
   },
   "dependencies": {
     "next": "12.2.3",
