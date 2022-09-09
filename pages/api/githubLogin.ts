@@ -1,14 +1,13 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { CLIENT_ID, REDIRECT_URI } from "../../config";
+import queryString from 'query-string';
 
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
   const { code } = request.query;
-
-  console.log(code);
 
   try {
     const body = {
@@ -18,14 +17,10 @@ export default async function handler(
       redirect_uri: REDIRECT_URI,
     };
 
-    console.log(body);
-
     const { data } = await axios.post(
       "https://github.com/login/oauth/access_token",
       body
     );
-
-    console.log(data);
 
     response.status(200).json({
       data,
