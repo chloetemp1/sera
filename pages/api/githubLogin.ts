@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { CLIENT_ID, REDIRECT_URI } from "../../config";
-import queryString from 'query-string';
+import queryString from "query-string";
 
 export default async function handler(
   request: NextApiRequest,
@@ -19,7 +19,8 @@ export default async function handler(
 
     const { data } = await axios.post(
       "https://github.com/login/oauth/access_token",
-      body
+      body,
+      { headers: { Accept: "application/json" } }
     );
 
     response.status(200).json({

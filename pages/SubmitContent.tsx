@@ -26,20 +26,36 @@ const SubmitContent = ({}) => {
     //   base: "master",
     // });
 
+    const authConfig = {
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${access_token}`,
+      },
+    };
+
+    // Create the file
+    const { data: createFileData } = await axios.put(
+      `https://api.github.com/repos/chloebrett/persona/contents/framework/content/bestPractices`,
+      {
+        message: "my commit message",
+        committer: { name: "Monalisa Octocat", email: "octocat@github.com" },
+        content: "bXkgbmV3IGZpbGUgY29udGVudHM=",
+      },
+      authConfig
+    );
+
+    const { sha } = createFileData;
+
+    // Create the pull request
     const { data } = await axios.post(
       `https://api.github.com/repos/chloebrett/persona/pulls`,
       {
         title: "Amazing new feature",
         body: "Please pull these awesome changes in!",
-        head: "octocat:new-feature",
+        head: sha,
         base: "master",
       },
-      {
-        headers: {
-          Accept: "application/vnd.github+json",
-          Authorization: `Bearer ${access_token}`,
-        },
-      }
+      authConfig
     );
     console.log(JSON.stringify(data));
   };
@@ -55,9 +71,10 @@ const SubmitContent = ({}) => {
         onChange={(e) => setBestPracticeFilename(e.target.value)}
         value={bestPracticeFilename}
       />
-      <textarea onChange={(e) => setBestPracticeContent(e.target.value)}>
-        {bestPracticeContent}
-      </textarea>
+      <textarea
+        value={bestPracticeContent}
+        onChange={(e) => setBestPracticeContent(e.target.value)}
+      />
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
