@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn compile-content && next build",
     "start": "next start",
     "lint": "next lint",
     "compile-content": "node ./tools/copyConfig.js && node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/compileContent.ts"
