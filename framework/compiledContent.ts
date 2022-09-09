@@ -26,12 +26,12 @@ const injectCohortFields: (
 });
 
 const compiledContent: CompiledContent = {
-  bestPractices: content.bestPractices.map((bestPractice) =>
+  bestPractices: content?.bestPractices?.map((bestPractice) =>
     injectBestPracticeFields(
       bestPractice as unknown as ResearcherBestPracticeMarkdown
     )
   ),
-  cohorts: content.cohorts.map(injectCohortFields),
+  cohorts: content?.cohorts?.map(injectCohortFields),
 };
 
 export default compiledContent;

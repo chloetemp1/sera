@@ -5,7 +5,7 @@ import Filters from "./Filters";
 import { useState } from "react";
 import Results from "./Results";
 import content from '../framework/compiledContent';
-import { BestPracticeKind, Cohort } from "../shared/sharedTypes";
+import { BestPracticeKind } from "../shared/sharedTypes";
 
 const Home: NextPage = () => {
   const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());

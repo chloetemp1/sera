@@ -42,7 +42,7 @@ const Filters = ({
     setFilterBestPracticesKinds
   );
 
-  const cohortFilters = cohorts.map((cohort) => (
+  const cohortFilters = cohorts?.map((cohort) => (
     <div key={cohort.id}>
       <input
         type="checkbox"
@@ -59,7 +59,7 @@ const Filters = ({
       <div key={bestPracticeKind}>
         <input
           type="checkbox"
-          checked={filterBestPracticesKinds.has(bestPracticeKind)}
+          checked={filterBestPracticesKinds?.has(bestPracticeKind)}
           onChange={() => toggleBestPracticesKind(bestPracticeKind)}
           id={`checkbox-${bestPracticeKind}`}
         />{" "}
