@@ -15,8 +15,7 @@ const GithubLogin = ({}) => {
 
     const getAuthData = async () => {
       const { data } = await axios.get(`/api/githubLogin?code=${code}`);
-      const parsedData = queryString.parse(data.data);
-      return JSON.stringify(parsedData);
+      return data.data;
     };
 
     getAuthData().then((data) => setAuthData(data));
