@@ -4,14 +4,16 @@ import useLocalStorage from "use-local-storage";
 import { Octokit } from "octokit";
 
 const SubmitContent = ({}) => {
-  const [authData] = useLocalStorage("githubAuth", "");
+  const [authData] = useLocalStorage<{ access_token: string }>("githubAuth", {
+    access_token: "",
+  });
   const [bestPracticeFilename, setBestPracticeFilename] =
     useState<string>("test.yaml");
   const [bestPracticeContent, setBestPracticeContent] =
     useState<string>("test content");
 
   const handleSubmit = async () => {
-    const { access_token } = JSON.parse(authData);
+    const { access_token } = authData;
 
     // const octokit = new Octokit({
     //   auth: access_token,
@@ -35,7 +37,7 @@ const SubmitContent = ({}) => {
 
     // Create the file
     const { data: createFileData } = await axios.put(
-      `https://api.github.com/repos/chloebrett/persona/contents/framework/content/bestPractices`,
+      `https://api.github.com/repos/chloebrett/persona/contents/framework/content/bestPractices/newFile.yaml`,
       {
         message: "my commit message",
         committer: { name: "Monalisa Octocat", email: "octocat@github.com" },
