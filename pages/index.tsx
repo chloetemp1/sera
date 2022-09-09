@@ -6,6 +6,8 @@ import { useState } from "react";
 import Results from "./Results";
 import content from '../framework/compiledContent';
 import { BestPracticeKind } from "../shared/sharedTypes";
+import queryString from 'query-string';
+import { CLIENT_ID, REDIRECT_URI } from "../config";
 
 const Home: NextPage = () => {
   const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());
@@ -13,6 +15,13 @@ const Home: NextPage = () => {
   const [filterBestPracticesKinds, setFilterBestPracticesKinds] = useState<
     Set<BestPracticeKind>
   >(new Set());
+
+  const params = {
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT_URI,
+  }
+
+  const queryStringified = queryString.stringify(params);
 
   return (
     <div className={styles.container}>
@@ -24,6 +33,8 @@ const Home: NextPage = () => {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <a href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Log in with Github</a>
 
       <main className={styles.main}>
         <h1 className={styles.title}>Persona</h1>
