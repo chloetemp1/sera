@@ -10,7 +10,9 @@
     "compile-content": "node ./tools/copyConfig.js && node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/compileContent.ts"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "next": "12.2.3",
+    "query-string": "^7.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "yaml": "^2.1.1"
