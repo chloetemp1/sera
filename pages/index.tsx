@@ -1,42 +1,41 @@
 import type { NextPage } from "next";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import Filters from "./Filters";
-import { useState } from "react";
-import Results from "./Results";
+import { useEffect, useRef, useState } from "react";
 import content from '../framework/compiledContent';
 import { BestPracticeKind } from "../shared/sharedTypes";
-import queryString from 'query-string';
-import { CLIENT_ID, REDIRECT_URI } from "../config";
+import styles from "../styles/Home.module.css";
+import { Layout } from "../layouts/Layout";
+import Filters from "../components/Filters";
+import Results from "../components/Results";
+
+
 
 const Home: NextPage = () => {
+  const [showFilters, setShowFilters] = useState(false);
+  const [showResults, setShowResults] = useState(false);
   const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());
+  const filterRef = useRef<HTMLDivElement>(null)
+  const resultsRef = useRef<HTMLDivElement>(null)
 
   const [filterBestPracticesKinds, setFilterBestPracticesKinds] = useState<
     Set<BestPracticeKind>
   >(new Set());
 
-  const params = {
-    client_id: CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
-  }
+  useEffect(() => {if (showFilters && filterRef.current) {
+    filterRef.current.scrollIntoView({ behavior: "smooth" })
+  }}, [showFilters, filterRef]);
 
-  const queryStringified = queryString.stringify(params);
+
+  useEffect(() => {if (showResults && resultsRef.current) {
+    resultsRef.current.scrollIntoView({ behavior: "smooth" })
+  }}, [showResults, resultsRef]);
 
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Persona | Software Engineering User Research Tool</title>
-        <meta
-          name="description"
-          content="Software engineering user research tool"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 
-      <a href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Log in with Github</a>
+    <Layout title="Persona | Software Engineering User Research Tool">
 
       <main className={styles.main}>
+       
+       <div className={styles.getStarted}>
         <h1 className={styles.title}>Persona</h1>
 
         <p className={styles.description}>
@@ -45,21 +44,32 @@ const Home: NextPage = () => {
           best practices for conducting research with various user cohorts.
         </p>
 
-        <Filters
-          cohorts={content.cohorts}
-          filterCohorts={filterCohorts}
-          setFilterCohorts={setFilterCohorts}
-          filterBestPracticesKinds={filterBestPracticesKinds}
-          setFilterBestPracticesKinds={setFilterBestPracticesKinds}
-        />
+        <button onClick={() => setShowFilters(true)}>Get Started</button>
 
-        <Results
-          content={content}
-          filterCohorts={filterCohorts}
-          filterBestPracticesKinds={filterBestPracticesKinds}
-        />
+        </div>
+
+        {showFilters && (
+            <Filters
+              cohorts={content.cohorts}
+              filterCohorts={filterCohorts}
+              setFilterCohorts={setFilterCohorts}
+              filterBestPracticesKinds={filterBestPracticesKinds}
+              setFilterBestPracticesKinds={setFilterBestPracticesKinds}
+              onClick={() => setShowResults(true)}
+              ref={filterRef}
+            />
+        )}
+
+        {showResults && (
+          <Results
+            content={content}
+            filterCohorts={filterCohorts}
+            filterBestPracticesKinds={filterBestPracticesKinds}
+            ref={resultsRef}
+          />
+        )}
       </main>
-    </div>
+    </Layout>
   );
 };
 

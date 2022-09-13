@@ -1,9 +1,9 @@
-import { useMemo } from "react";
+import { ForwardedRef, forwardRef, useMemo } from "react";
 import {
   BestPracticeKind,
   CompiledContent,
-} from "../shared/sharedTypes";
-import styles from "../styles/Results.module.css";
+} from "../../shared/sharedTypes";
+import styles from "./Results.module.css";
 
 interface Props {
   content: CompiledContent;
@@ -11,18 +11,23 @@ interface Props {
   filterBestPracticesKinds: Set<BestPracticeKind>;
 }
 
-const Results = ({
+const Results = forwardRef(({
   content,
   filterCohorts,
   filterBestPracticesKinds,
-}: Props) => {
+}: Props, ref: ForwardedRef<HTMLDivElement>) => {
+
+  console.log(content.bestPractices)
+
   const filteredBestPractices = useMemo(
     () =>
       content?.bestPractices?.filter(
-        ({ cohorts, kind }) =>
+        ({ cohorts, kind }) => {
+        if (cohorts) {
           cohorts.some((cohort) => filterCohorts.has(cohort)) &&
           filterBestPracticesKinds.has(kind)
-      ),
+        }
+}),
     [filterCohorts, filterBestPracticesKinds, content]
   );
 
@@ -34,11 +39,13 @@ const Results = ({
   ));
 
   return (
-    <div>
+    <div className={styles.container} ref={ref}>
       <h1>Results</h1>
       {displayedBestPractices}
     </div>
   );
-};
+});
+
+Results.displayName = 'Results';
 
 export default Results;

@@ -1,0 +1,11 @@
+.navBar {
+  height: 60px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 1.5rem 0;
+  font-weight: bold;
+}
+
+.navBarLink {
+  padding: 0 2rem;
+}
