@@ -1,6 +1,5 @@
 import queryString from 'query-string';
-import styles from "./NavBar.module.css";
-import { CLIENT_ID, REDIRECT_URI } from '../../config';
+import { CLIENT_ID, REDIRECT_URI } from '../config';
 
 const NavBar = () => {
   const params = {
@@ -11,8 +10,8 @@ const NavBar = () => {
   const queryStringified = queryString.stringify(params);
 
   return (
-    <div className={styles.navBar}>
-    <a href={`https://github.com/login/oauth/authorize?${queryStringified}`} className={styles.navBarLink}>Submit Content</a>
+    <div className="flex justify-end w-full h-12 py-4 font-semibold">
+    <a className='mx-4 mr-6' href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Submit Content</a>
     <a href={`https://github.com/login/oauth/authorize?${queryStringified}`}>My Favorites</a>
   </div>
   )

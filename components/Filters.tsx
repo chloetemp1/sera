@@ -1,10 +1,9 @@
-import { Dispatch, ForwardedRef, forwardRef, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   BestPracticeKind,
   Cohort,
   ResearcherCohort,
-} from "../../shared/sharedTypes";
-import styles from "./Filters.module.css";
+} from "../shared/sharedTypes";
 
 const toggleSetter: <T>(
   setter: Dispatch<SetStateAction<Set<T>>>
@@ -31,14 +30,14 @@ interface Props {
   onClick: () => void;
 }
 
-const Filters = forwardRef(({
+const Filters = ({
   cohorts,
   filterCohorts,
   setFilterCohorts,
   filterBestPracticesKinds,
   setFilterBestPracticesKinds,
   onClick,
-}: Props, ref: ForwardedRef<HTMLDivElement>) => {
+}: Props) => {
   const toggleCohort = toggleSetter<string>(setFilterCohorts);
 
   const toggleBestPracticesKind = toggleSetter<BestPracticeKind>(
@@ -74,20 +73,22 @@ const Filters = forwardRef(({
   );
 
   return (
-    <div className={styles.container} ref={ref}>
+    <div className="flex flex-col space-y-10">
       <div>
-        <h2>Cohorts</h2>
-        {cohortFilters}
+        <h2 className="pb-4 font-bold">Cohorts (select any that are relevant to your research)</h2>
+        <div className="grid grid-cols-3 gap-4">{cohortFilters}</div>
+        
       </div>
       <div>
-        <h2>Best Practice Types</h2>
-        {bestPracticesKindsFilters}
+      <h2 className="pb-4 font-bold">Best Practice Types</h2>
+      <div className="grid grid-cols-3 gap-4"> {bestPracticesKindsFilters}</div>
       </div>
+      <div className="flex justify-center pt-32">
       <button onClick={onClick}>Find Best Practices</button>
+      </div>
+      
     </div>
   );
-});
-
-Filters.displayName = 'Filters';
+};
 
 export default Filters;
