@@ -8,7 +8,7 @@ interface LayoutProps {
 
 export const Layout = ({title, children}: LayoutProps) => {
   return(
-    <div className="flex flex-col items-center px-6 justify-items-center">
+    <div className="flex flex-col items-center px-6 bg-white dark:bg-black dark:text-white justify-items-center">
       <Head>
         <title>{title}</title>
         <meta
@@ -18,7 +18,7 @@ export const Layout = ({title, children}: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-    <header className="sticky top-0 w-full bg-white">
+    <header className="sticky top-0 w-full bg-white dark:bg-black">
       <NavBar />
     </header>
       
