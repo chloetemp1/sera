@@ -16,8 +16,8 @@ interface BestPracticeProps {
 
 const BestPractice = ({practice}: BestPracticeProps) => {
   return (
-    <div key={practice.id}>
-      <p>{practice.title}</p>
+    <div className="pb-3">
+      <p className="pb-1">{practice.title}</p>
       <p>{practice.contentMarkdown}</p>
     </div>
   )
@@ -29,8 +29,8 @@ interface BestPracticeGroupProps {
 
 const BestPracticeGroup = ({kind, bestPractices }: BestPracticeGroupProps) => {
   return(
-    <div>
-    <h1>{kind}</h1>
+    <div className="pb-10">
+    <h1 className="pb-2">{kind}</h1>
     {filterByKind(bestPractices, kind).map((practice) => (
       <BestPractice key={practice.id} practice={practice} />
   ))}
