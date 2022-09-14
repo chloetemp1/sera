@@ -2,7 +2,41 @@ import { useMemo } from "react";
 import {
   BestPracticeKind,
   CompiledContent,
+  ResearcherBestPractice,
 } from "../shared/sharedTypes";
+
+
+const filterByKind = (bestPractices: ResearcherBestPractice[], kind: BestPracticeKind) => {
+  return bestPractices.filter((practice) => practice.kind === kind)
+}
+
+interface BestPracticeProps {
+  practice: ResearcherBestPractice;
+}
+
+const BestPractice = ({practice}: BestPracticeProps) => {
+  return (
+    <div key={practice.id}>
+      <p>{practice.title}</p>
+      <p>{practice.contentMarkdown}</p>
+    </div>
+  )
+}
+interface BestPracticeGroupProps {
+  kind: BestPracticeKind;
+  bestPractices: ResearcherBestPractice[];
+}
+
+const BestPracticeGroup = ({kind, bestPractices }: BestPracticeGroupProps) => {
+  return(
+    <div>
+    <h1>{kind}</h1>
+    {filterByKind(bestPractices, kind).map((practice) => (
+      <BestPractice key={practice.id} practice={practice} />
+  ))}
+  </div>
+  )
+}
 
 interface Props {
   content: CompiledContent;
@@ -16,31 +50,26 @@ const Results = ({
   filterBestPracticesKinds,
 }: Props) => {
 
-  console.log(content.bestPractices)
+  
 
   const filteredBestPractices = useMemo(
     () =>
       content?.bestPractices?.filter(
         ({ cohorts, kind }) => {
-        if (cohorts) {
-          cohorts.some((cohort) => filterCohorts.has(cohort)) &&
+          return cohorts?.some((cohort) => filterCohorts.has(cohort)) &&
           filterBestPracticesKinds.has(kind)
         }
-}),
+      ),
     [filterCohorts, filterBestPracticesKinds, content]
   );
 
-  const displayedBestPractices = filteredBestPractices?.map((bestPractice) => (
-    <div key={bestPractice.id}>
-      <div>{bestPractice.title}</div>
-      <div>{bestPractice.contentMarkdown}</div>
-    </div>
-  ));
 
   return (
-    <div>
-      <h1>Results</h1>
-      {displayedBestPractices}
+    <div className="flex flex-col items-stretch">
+      <h1 className="flex justify-center pb-20 text-3xl font-bold">Results</h1>
+      <>
+      {Array.from(filterBestPracticesKinds).map((kind) => <BestPracticeGroup key={kind} kind={kind} bestPractices={filteredBestPractices} />)}
+      </>
     </div>
   );
 };
