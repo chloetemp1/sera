@@ -31,6 +31,7 @@ export type Cohort = ResearcherCohort | UserContributedCohort;
 /** Best practices */
 
 export enum BestPracticeKind {
+  GENERAL_ADVICE = "GENERAL_ADVICE",
   METHODOLOGY = "METHODOLOGY",
   TOOL = "TOOL",
   CASE_STUDY = "CASE_STUDY",
