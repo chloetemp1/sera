@@ -4,19 +4,22 @@ import styles from "../styles/Home.module.css";
 import Filters from "./Filters";
 import { useState } from "react";
 import Results from "./Results";
-import content from '../framework/compiledContent';
-import queryString from 'query-string';
+import content from "../framework/compiledContent";
+import queryString from "query-string";
 import { CLIENT_ID, REDIRECT_URI } from "../config";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());
-  const [filterSubCohorts, setFilterSubCohorts] = useState<Set<string>>(new Set());
+  const [filterSubCohorts, setFilterSubCohorts] = useState<Set<string>>(
+    new Set()
+  );
   const [filterKeywords, setFilterKeywords] = useState<Set<string>>(new Set());
 
   const params = {
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
-  }
+  };
 
   const queryStringified = queryString.stringify(params);
 
@@ -31,7 +34,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <a href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Log in with Github</a>
+      <a href={`https://github.com/login/oauth/authorize?${queryStringified}`}>
+        Log in with Github
+      </a>
+
+      <div>
+        <Link href={"/favourites"}>Your favourites</Link>
+      </div>
 
       <main className={styles.main}>
         <h1 className={styles.title}>Persona</h1>
