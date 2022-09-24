@@ -1,12 +1,10 @@
 import type { NextPage } from "next";
 import { useEffect, useRef, useState } from "react";
 import content from '../framework/compiledContent';
-import { BestPracticeKind } from "../shared/sharedTypes";
 import { Layout } from "../layouts/Layout";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
-
-
+import { CLIENT_ID, REDIRECT_URI } from "../config";
 
 const Home: NextPage = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -15,21 +13,19 @@ const Home: NextPage = () => {
   const filterRef = useRef<HTMLDivElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
 
-  const [filterBestPracticesKinds, setFilterBestPracticesKinds] = useState<
-    Set<BestPracticeKind>
-  >(new Set());
-
   useEffect(() => {if (showFilters && filterRef.current) {
     filterRef.current.scrollIntoView({ behavior: "smooth" })
   }}, [showFilters, filterRef]);
-
+  const [filterSubCohorts, setFilterSubCohorts] = useState<Set<string>>(
+    new Set()
+  );
+  const [filterKeywords, setFilterKeywords] = useState<Set<string>>(new Set());
 
   useEffect(() => {if (showResults && resultsRef.current) {
     resultsRef.current.scrollIntoView({ behavior: "smooth" })
   }}, [showResults, resultsRef]);
 
   return (
-
     <Layout title="Persona | Software Engineering User Research Tool">
 
       <main className="max-w-3xl">
@@ -48,24 +44,29 @@ const Home: NextPage = () => {
         </div>
 
         {showFilters && (
-          <div className="flex flex-col items-center justify-center h-screen pb-36" ref={filterRef}>
+          <div className="flex flex-col items-center justify-center min-h-screen pt-44 pb-36" ref={filterRef}>
             <Filters
               cohorts={content.cohorts}
+              subCohorts={content.metadata[0].subCohorts}
+              keywords={content.metadata[0].keywords}
               filterCohorts={filterCohorts}
               setFilterCohorts={setFilterCohorts}
-              filterBestPracticesKinds={filterBestPracticesKinds}
-              setFilterBestPracticesKinds={setFilterBestPracticesKinds}
+              filterSubCohorts={filterSubCohorts}
+              setFilterSubCohorts={setFilterSubCohorts}
+              filterKeywords={filterKeywords}
+              setFilterKeywords={setFilterKeywords}
               onClick={() => setShowResults(true)}
             />
           </div>
         )}
 
         {showResults && (
-          <div className="flex flex-col items-center justify-center h-screen" ref={resultsRef}>
+          <div className="flex flex-col items-center justify-center min-h-screen pt-44" ref={resultsRef}>
             <Results
               content={content}
               filterCohorts={filterCohorts}
-              filterBestPracticesKinds={filterBestPracticesKinds}
+              filterSubCohorts={filterSubCohorts}
+              filterKeywords={filterKeywords}
             />
           </div>
         )}

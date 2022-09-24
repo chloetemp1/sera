@@ -4,18 +4,27 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "yarn compile-content && next build",
+    "build": "yarn content && next build",
     "start": "next start",
     "lint": "next lint",
-    "compile-content": "node ./tools/copyConfig.js && node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/compileContent.ts"
+    "content": "node ./tools/copyConfig.js && node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/compileContent.ts",
+    "extract": "node ./tools/copyConfig.js && node --loader ts-node/esm --experimental-specifier-resolution=node ./tools/extractContent.ts"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.6",
     "axios": "^0.27.2",
+    "base-64": "^1.0.0",
+    "formik": "^2.2.9",
     "next": "12.2.3",
     "octokit": "^2.0.7",
     "query-string": "^7.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "read-excel-file": "^5.5.0",
+    "sha1": "^1.1.1",
     "use-local-storage": "^2.3.6",
     "yaml": "^2.1.1"
   },

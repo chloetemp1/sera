@@ -1,9 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import {
-  BestPracticeKind,
-  Cohort,
-  ResearcherCohort,
-} from "../shared/sharedTypes";
+import { Cohort } from "../shared/sharedTypes";
 
 const toggleSetter: <T>(
   setter: Dispatch<SetStateAction<Set<T>>>
@@ -22,55 +18,69 @@ const toggleSetter: <T>(
 };
 
 interface Props {
-  cohorts: ResearcherCohort[];
+  cohorts: Cohort[];
+  subCohorts: string[];
+  keywords: string[];
   filterCohorts: Set<string>;
   setFilterCohorts: Dispatch<SetStateAction<Set<string>>>;
-  filterBestPracticesKinds: Set<BestPracticeKind>;
-  setFilterBestPracticesKinds: Dispatch<SetStateAction<Set<BestPracticeKind>>>;
+  filterSubCohorts: Set<string>;
+  setFilterSubCohorts: Dispatch<SetStateAction<Set<string>>>;
+  filterKeywords: Set<string>;
+  setFilterKeywords: Dispatch<SetStateAction<Set<string>>>;
   onClick: () => void;
 }
 
 const Filters = ({
   cohorts,
+  subCohorts,
+  keywords,
   filterCohorts,
   setFilterCohorts,
-  filterBestPracticesKinds,
-  setFilterBestPracticesKinds,
-  onClick,
+  filterSubCohorts,
+  setFilterSubCohorts,
+  filterKeywords,
+  setFilterKeywords,
+  onClick
 }: Props) => {
   const toggleCohort = toggleSetter<string>(setFilterCohorts);
-
-  const toggleBestPracticesKind = toggleSetter<BestPracticeKind>(
-    setFilterBestPracticesKinds
-  );
+  const toggleSubCohort = toggleSetter<string>(setFilterSubCohorts);
+  const toggleKeyword = toggleSetter<string>(setFilterKeywords);
 
   const cohortFilters = cohorts?.map((cohort) => (
-    <div key={cohort.id}>
+    <div key={cohort.referenceName}>
       <input
         type="checkbox"
-        checked={filterCohorts.has(cohort.id)}
-        onChange={() => toggleCohort(cohort.id)}
-        id={`checkbox-${cohort.id}`}
+        checked={filterCohorts.has(cohort.referenceName)}
+        onChange={() => toggleCohort(cohort.referenceName)}
+        id={`checkbox-cohort-${cohort.referenceName}`}
       />{" "}
-      <label htmlFor={`checkbox-${cohort.id}`}>{cohort.name}</label>
+      <label htmlFor={`checkbox-cohort-${cohort.referenceName}`}>{cohort.name}</label>
     </div>
   ));
 
-  const bestPracticesKindsFilters = Object.values(BestPracticeKind).map(
-    (bestPracticeKind) => (
-      <div key={bestPracticeKind}>
-        <input
-          type="checkbox"
-          checked={filterBestPracticesKinds?.has(bestPracticeKind)}
-          onChange={() => toggleBestPracticesKind(bestPracticeKind)}
-          id={`checkbox-${bestPracticeKind}`}
-        />{" "}
-        <label htmlFor={`checkbox-${bestPracticeKind}`}>
-          {bestPracticeKind}
-        </label>
-      </div>
-    )
-  );
+  const subCohortFilters = subCohorts?.map((subCohort) => (
+    <div key={subCohort}>
+      <input
+        type="checkbox"
+        checked={filterSubCohorts.has(subCohort)}
+        onChange={() => toggleSubCohort(subCohort)}
+        id={`checkbox-subcohort-${subCohort}`}
+      />{" "}
+      <label htmlFor={`checkbox-subcohort-${subCohort}`}>{subCohort}</label>
+    </div>
+  ));
+
+  const keywordFilters = keywords?.map((keyword) => (
+    <div key={keyword}>
+      <input
+        type="checkbox"
+        checked={filterKeywords.has(keyword)}
+        onChange={() => toggleKeyword(keyword)}
+        id={`checkbox-keyword-${keyword}`}
+      />{" "}
+      <label htmlFor={`checkbox-keyword-${keyword}`}>{keyword}</label>
+    </div>
+  ));
 
   return (
     <div className="flex flex-col space-y-10">
@@ -79,10 +89,17 @@ const Filters = ({
         <div className="grid grid-cols-3 gap-4">{cohortFilters}</div>
         
       </div>
+
       <div>
-      <h2 className="pb-4 font-bold">Best Practice Types</h2>
-      <div className="grid grid-cols-3 gap-4"> {bestPracticesKindsFilters}</div>
+        <h2 className="pb-4 font-bold">Sub-cohorts</h2>
+        <div className="grid grid-cols-3 gap-4">{subCohortFilters}</div>
       </div>
+
+      <div>
+        <h2 className="pb-4 font-bold">Keywords</h2>
+        <div className="grid grid-cols-3 gap-4">{keywordFilters}</div>
+      </div>
+
       <div className="flex justify-center pt-32">
       <button onClick={onClick}>Find Best Practices</button>
       </div>

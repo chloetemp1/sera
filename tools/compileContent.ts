@@ -11,7 +11,7 @@ const yaml = require("yaml");
 // import path from 'path';
 // import yaml from 'yaml';
 
-const ORIGINAL_CONTENT_FOLDER = path.join(__dirname, "../framework/content/");
+const ORIGINAL_CONTENT_FOLDER = path.join(__dirname, "../framework/content-researchers/");
 const COMPILED_CONTENT_FOLDER = path.join(
   __dirname,
   "../framework/content-compiled"
@@ -44,6 +44,7 @@ function generatePathsList(dirPath: string) {
 }
 
 function withoutExtension(path: string) {
+  console.log(path);
   return path.split("." + extensionOf(path))[0];
 }
 

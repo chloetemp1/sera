@@ -1,0 +1,26 @@
+paperName: "Designing video games for the blind: results of an empirical study"
+paperLink: https://www.proquest.com/docview/1922822481?pq-origsite=primo
+cohorts:
+  - vision impaired
+subCohorts:
+  - blind
+findings: Suggestions for video games include audio feedback needed for game
+  navigation, in-game effects such as level of health, and enemy identification
+notes: |-
+  - after sending emails out for a month, only 6 people met the criteria
+  - analysis heavy
+bestPractices: >-
+  - 6 blind participants aged 18-40 were recruited via email from
+  the National Federation for the Blind in Baltimore Maryland
+
+  - meaningful audio or tactile feedback is important and needs to be considered when designing for blind people
+methodology: >-
+  - observational & qualitative interview questionnaire
+
+  - participants were allowed to familiarise themselves with the laptop before testing
+
+  - analysis used the Non-Functional Requirements Framework, and tools from grounded theory method (GTM)
+
+  - open and axial coding was applied to the data
+keywords: []
+id: 98fe0f2c
