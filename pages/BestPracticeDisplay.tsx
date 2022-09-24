@@ -52,6 +52,7 @@ const displayField = (
         href={fieldData as string}
         style={{ textDecoration: "underline" }}
         target="_BLANK"
+        rel="noreferrer"
       >
         {fieldData}
       </a>
@@ -61,7 +62,7 @@ const displayField = (
   if (fieldData === undefined) {
     return "[none]";
   } else if (Array.isArray(fieldData)) {
-    return fieldData.map((name: string) => <Chip label={name} />);
+    return fieldData.map((name: string) => <Chip key={name} label={name} />);
   } else {
     return fieldData;
   }
@@ -87,6 +88,10 @@ const BestPracticeDisplay = ({ bestPractice }: Props) => {
   const isFavourited = (bestPracticeId: string) =>
     bestPracticeId in favourites &&
     favourites[bestPracticeId as keyof typeof favourites] === true;
+
+  if (bestPractice === undefined) {
+    return null;
+  }
 
   return (
     <div className={styles.bestPractice} key={bestPractice.id}>
