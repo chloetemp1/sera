@@ -28,7 +28,7 @@ const Results = ({
 
   const displayedBestPractices = filteredBestPractices?.map(
     (bestPractice: BestPractice) => (
-      <BestPracticeDisplay bestPractice={bestPractice} />
+      <BestPracticeDisplay key={bestPractice.id} bestPractice={bestPractice} />
     )
   );
 

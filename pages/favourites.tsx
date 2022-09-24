@@ -25,7 +25,7 @@ const BestPractice = () => {
       <Link href="/">&laquo; Back</Link>
       <h1>Your Favourited Best Practices</h1>
       {bestPractices.map((bestPractice) => (
-        <BestPracticeDisplay bestPractice={bestPractice} />
+        <BestPracticeDisplay key={bestPractice.id} bestPractice={bestPractice} />
       ))}
     </div>
   );
