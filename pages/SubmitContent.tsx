@@ -1,18 +1,45 @@
 import axios from "axios";
-import { useState } from "react";
 import useLocalStorage from "use-local-storage";
-import { Octokit } from "octokit";
+import { Formik } from "formik";
+import { fieldNames, humanReadableFieldNames } from "./BestPracticeDisplay";
+import { TextField } from "@mui/material";
+const base64 = require('base-64');
+const yaml = require('yaml');
+
+const displayInput = (fieldName: string, handleChange: any, handleBlur: any, values: any) => {
+  const largeFields = ['findings', 'summary', 'notes', 'bestPractices', 'methodology', 'tools', 'terminology', 'notesOfCaution'];
+
+  return (
+    <div>
+      <TextField
+        sx={{
+          margin: '10px',
+          width: 'calc(50% - 20px)',
+        }}
+        key={fieldName}
+        type="text"
+        multiline
+        minRows={largeFields.includes(fieldName) ? 5 : 1}
+        placeholder={
+          humanReadableFieldNames[
+            fieldName as keyof typeof humanReadableFieldNames
+          ]
+        }
+        name={fieldName}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values[fieldName as keyof typeof values]}
+      />
+    </div>
+  );
+};
 
 const SubmitContent = ({}) => {
   const [authData] = useLocalStorage<{ access_token: string }>("githubAuth", {
     access_token: "",
   });
-  const [bestPracticeFilename, setBestPracticeFilename] =
-    useState<string>("test.yaml");
-  const [bestPracticeContent, setBestPracticeContent] =
-    useState<string>("test content");
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (values: any) => {
     const { access_token } = authData;
 
     // const octokit = new Octokit({
@@ -35,13 +62,15 @@ const SubmitContent = ({}) => {
       },
     };
 
+    const content = base64.encode(yaml.stringify(values));
+
     // Create the file
     const { data: createFileData } = await axios.put(
-      `https://api.github.com/repos/chloebrett/persona/contents/framework/content/bestPractices/newFile.yaml`,
+      `https://api.github.com/repos/chloebrett/persona/contents/framework/content-user/bestPractices/newFile.yaml`,
       {
         message: "my commit message",
-        committer: { name: "Monalisa Octocat", email: "octocat@github.com" },
-        content: "bXkgbmV3IGZpbGUgY29udGVudHM=",
+        committer: { name: "User Generated Content Submission", email: "noreply@github.com" },
+        content,
       },
       authConfig
     );
@@ -68,16 +97,45 @@ const SubmitContent = ({}) => {
 
   return (
     <div>
-      <input
-        type="text"
-        onChange={(e) => setBestPracticeFilename(e.target.value)}
-        value={bestPracticeFilename}
-      />
-      <textarea
-        value={bestPracticeContent}
-        onChange={(e) => setBestPracticeContent(e.target.value)}
-      />
-      <button onClick={handleSubmit}>Submit</button>
+      <h1>Submit a best practice</h1>
+      <Formik
+        initialValues={{
+          paperName: "",
+          paperLink: "",
+          cohorts: [],
+          subCohorts: [],
+          keywords: [],
+          targetAudience: "",
+          findings: "",
+          summary: "",
+          notes: "",
+          bestPractices: "",
+          methodologyUsed: "",
+          toolsUsed: "",
+          terminology: "",
+          notesOfCaution: "",
+          relatedPapers: "",
+        }}
+        onSubmit={handleSubmit}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isSubmitting,
+          /* and other goodies */
+        }) => (
+          <form onSubmit={handleSubmit}>
+            {fieldNames.map((fieldName) => displayInput(fieldName, handleChange, handleBlur, values))}
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </form>
+        )}
+      </Formik>
     </div>
   );
 };
