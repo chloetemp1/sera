@@ -34,9 +34,17 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <a href={`https://github.com/login/oauth/authorize?${queryStringified}`}>
-        Log in with Github
-      </a>
+      <div>
+        <a
+          href={`https://github.com/login/oauth/authorize?${queryStringified}`}
+        >
+          Log in with Github
+        </a>
+      </div>
+
+      <div>
+        <Link href={`/submit`}>Submit content</Link>
+      </div>
 
       <div>
         <Link href={"/favourites"}>Your favourites</Link>
