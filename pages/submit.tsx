@@ -65,31 +65,18 @@ const SubmitContent = ({}) => {
     const content = base64.encode(yaml.stringify(values));
 
     // Create the file
-    const { data: createFileData } = await axios.put(
+    const { data } = await axios.put(
       `https://api.github.com/repos/chloebrett/persona/contents/framework/content-user/bestPractices/newFile.yaml`,
       {
-        message: "my commit message",
+        message: "Add user-generated content",
         committer: { name: "User Generated Content Submission", email: "noreply@github.com" },
         content,
       },
       authConfig
     );
 
-    const { sha } = createFileData;
-
-    // Create the pull request
-    const { data } = await axios.post(
-      `https://api.github.com/repos/chloebrett/persona/pulls`,
-      {
-        title: "Amazing new feature",
-        body: "Please pull these awesome changes in!",
-        head: sha,
-        base: "master",
-      },
-      authConfig
-    );
-    console.log(JSON.stringify(data));
-  };
+    console.log(data);
+  }
 
   //   if (authData === "") {
   //     return null;

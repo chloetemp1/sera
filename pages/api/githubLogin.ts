@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import { CLIENT_ID, REDIRECT_URI } from "../../config";
-import queryString from "query-string";
 
 export default async function handler(
   request: NextApiRequest,
