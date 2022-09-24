@@ -4,9 +4,27 @@ import Link from "next/link";
 import LinkIcon from "@mui/icons-material/Link";
 import Chip from "@mui/material/Chip";
 import useLocalStorage from "use-local-storage";
-import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 
-const humanReadableFieldNames = {
+export const fieldNames = [
+  "paperName",
+  "paperLink",
+  "cohorts",
+  "subCohorts",
+  "keywords",
+  "targetAudience",
+  "findings",
+  "summary",
+  "notes",
+  "bestPractices",
+  "methodology",
+  "tools",
+  "terminology",
+  "notesOfCaution",
+  "relatedPapers",
+];
+
+export const humanReadableFieldNames = {
   paperName: "Paper name",
   paperLink: "Link to paper",
   cohorts: "Cohorts",
@@ -54,38 +72,36 @@ interface Props {
 }
 
 const BestPracticeDisplay = ({ bestPractice }: Props) => {
-  const [favourites, setFavourites] = useLocalStorage('favourited-best-practices', {});
+  const [favourites, setFavourites] = useLocalStorage(
+    "favourited-best-practices",
+    {}
+  );
 
-  const toggleFavourited = (bestPracticeId: string) => setFavourites(prev => ({
-    ...prev,
-    [bestPracticeId]: !(prev ?? {})[bestPracticeId as keyof typeof prev] ?? true,
-  }));
+  const toggleFavourited = (bestPracticeId: string) =>
+    setFavourites((prev) => ({
+      ...prev,
+      [bestPracticeId]:
+        !(prev ?? {})[bestPracticeId as keyof typeof prev] ?? true,
+    }));
 
-  const isFavourited = (bestPracticeId: string) => bestPracticeId in favourites && favourites[bestPracticeId as keyof typeof favourites] === true;
+  const isFavourited = (bestPracticeId: string) =>
+    bestPracticeId in favourites &&
+    favourites[bestPracticeId as keyof typeof favourites] === true;
 
   return (
     <div className={styles.bestPractice} key={bestPractice.id}>
-      <div><Link href={`/bestPractice/${bestPractice.id}`}>
-        <LinkIcon sx={{ cursor: "pointer" }} />
-      </Link> Permalink</div>
-      <div><Button onClick={() => toggleFavourited(bestPractice.id)}>{isFavourited(bestPractice.id) ? 'Un-favourite' : 'Favourite'}</Button></div>
-      {[
-        "paperName",
-        "paperLink",
-        "cohorts",
-        "subCohorts",
-        "keywords",
-        "targetAudience",
-        "findings",
-        "summary",
-        "notes",
-        "bestPractices",
-        "methodology",
-        "tools",
-        "terminology",
-        "notesOfCaution",
-        "relatedPapers",
-      ]
+      <div>
+        <Link href={`/bestPractice/${bestPractice.id}`}>
+          <LinkIcon sx={{ cursor: "pointer" }} />
+        </Link>{" "}
+        Permalink
+      </div>
+      <div>
+        <Button onClick={() => toggleFavourited(bestPractice.id)}>
+          {isFavourited(bestPractice.id) ? "Un-favourite" : "Favourite"}
+        </Button>
+      </div>
+      {fieldNames
         .filter(
           (fieldName: string) =>
             bestPractice[fieldName as keyof typeof bestPractice] !==
