@@ -1,0 +1,33 @@
+paperName: Double-Diamond Model-Based Orientation Guidance in Wearable
+  Human–Machine Navigation Systems for Blind and Visually Impaired People
+paperLink: https://www.proquest.com/docview/2535415934?accountid=12528&pq-origsite=primo
+cohorts:
+  - vision impaired
+subCohorts:
+  - blind and vision impaired
+keywords:
+  - blind
+  - blindfolded
+  - sensors
+  - observations
+summary: Tests a wearable device as a navigation system, which gives tactile feedback
+notes: |-
+  - 4 BVI and 4 blinfolded people used
+  - virtual training and real field tests
+methodology: >-
+  - observational
+
+  - obstacle-free field tests
+
+  - triple visual landmarks used for localisation purposes
+
+  - inner clock orientation exercise is the most popular orientation finding training method for BVI people
+tools: >-
+  - tactile wristband with bluetooth module to receive guidance messages
+
+  - flight control game joystick (PXN-2113 Pro) used for participant to give feedback regarding the perceived direction
+
+  - drone used as an observer
+terminology: BVI = blind and vision impaired
+notesOfCaution: "- be aware of the different skin sensitivities people have"
+id: 37ed01f9

@@ -1,0 +1,24 @@
+paperName: Review of Quantitative Empirical Evaluations of Technology for People
+  with Visual Impairments
+paperLink: https://dl.acm.org/doi/10.1145/3313831.3376749
+cohorts:
+  - vision impaired
+keywords:
+  - blind
+  - blindfolded
+  - partially sighted
+  - evaluation
+targetAudience: General advice for conduting evaluations
+summary: Reviews past research and recommends how this research area can be improved
+bestPractices: >-
+  - visual impairements other than blindness are under-represented
+  so including these users in studies could provide more insight into this
+  diverse population
+
+  - conducting evaluations in the field could be easier to conduct when it is on the participant's own spaces and schedule
+
+  - consider single subject design for quantitative evaluations to address issues such as difficulty in recruitment
+
+  - look to other fields of research for approaches
+terminology: PVI = people with visual impairments
+id: 11708c06

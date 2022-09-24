@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs/promises");
+const yaml = require('yaml');
 const {
   default: readExcelFile,
   readSheetNames,
@@ -16,18 +17,19 @@ const writeFolder = path.join(
   __dirname,
   "../framework/content-researchers/bestPractices"
 );
-const writeFileName = "bestPractices.yaml";
-const writeFilePath = path.join(writeFolder, writeFileName);
 
 const schema = {
   "Paper Name": {
     prop: "paperName",
+    required: true,
   },
   "Paper Link": {
     prop: "paperLink",
+    required: true,
   },
   Cohorts: {
     prop: "cohorts",
+    required: true,
   },
   "Sub-cohorts": {
     prop: "subCohorts",
@@ -67,6 +69,19 @@ const schema = {
   },
 };
 
+const writeBestPractices = async (bestPracticesWithIds: any[]) => {
+    await Promise.all(
+        bestPracticesWithIds.map(async (bestPractice: any) => {
+            const yamlData = yaml.stringify(bestPractice);
+    
+          await fs.writeFile(
+            path.join(writeFolder, `${bestPractice.id}.yaml`),
+            yamlData,
+          );
+        })
+      );
+}
+
 const run = async () => {
   const sheetNames = await readSheetNames(filePath);
 
@@ -80,8 +95,6 @@ const run = async () => {
 
       const data = await readExcelFile(filePath, { sheet: sheetName, schema });
 
-      console.log(data);
-
       return data;
     })
   );
@@ -90,12 +103,15 @@ const run = async () => {
 
   const bestPracticesWithIds = bestPractices.map((bestPractice: any) => ({
     ...bestPractice,
+    cohorts: bestPractice.cohorts.toLowerCase().split(', '),
+    subCohorts: bestPractice.subCohorts?.toLowerCase().split(', '),
+    keywords: bestPractice.keywords?.toLowerCase().split(', '),
     id: sha1(JSON.stringify(bestPractice)).substring(0, 8),
   }));
 
   await fs.mkdir(writeFolder, { recursive: true });
 
-  await fs.writeFile(writeFilePath, JSON.stringify(bestPracticesWithIds));
+  await writeBestPractices(bestPracticesWithIds);
 };
 
 run();
