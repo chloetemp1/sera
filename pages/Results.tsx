@@ -1,22 +1,12 @@
 import { useMemo } from "react";
-import { BestPractice, Cohort, CompiledContent } from "../shared/sharedTypes";
-import styles from "../styles/Results.module.css";
+import { BestPractice, CompiledContent } from "../shared/sharedTypes";
+import BestPracticeDisplay from "./BestPracticeDisplay";
 
 interface Props {
   content: CompiledContent;
   filterCohorts: Set<string>;
   filterSubCohorts: Set<string>;
   filterKeywords: Set<string>;
-}
-
-const displayField = (fieldData: string | string[] | undefined) => {
-  if (fieldData === undefined) {
-    return '[none]';
-  } else if (Array.isArray(fieldData)) {
-    return fieldData.join(', ');
-  } else {
-    return fieldData;
-  }
 }
 
 const Results = ({
@@ -36,32 +26,11 @@ const Results = ({
     [filterCohorts, filterSubCohorts, filterKeywords, content]
   );
 
-  const displayedBestPractices = filteredBestPractices?.map((bestPractice) => (
-    <div className={styles.bestPractice} key={bestPractice.id}>
-      {[
-        "paperName",
-        "paperLink",
-        "cohorts",
-        "subCohorts",
-        "keywords",
-        "targetAudience",
-        "findings",
-        "summary",
-        "notes",
-        "bestPractices",
-        "methodology",
-        "tools",
-        "terminology",
-        "notesOfCaution",
-        "relatedPapers",
-      ].map((fieldName: string) => (
-        <div key={`best-practice-${bestPractice.id}-${fieldName}`}>
-          <h3>{fieldName}</h3>
-          {displayField(bestPractice[fieldName as keyof typeof bestPractice])}
-        </div>
-      ))}
-    </div>
-  ));
+  const displayedBestPractices = filteredBestPractices?.map(
+    (bestPractice: BestPractice) => (
+      <BestPracticeDisplay bestPractice={bestPractice} />
+    )
+  );
 
   return (
     <div>
