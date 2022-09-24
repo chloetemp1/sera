@@ -5,16 +5,13 @@ import Filters from "./Filters";
 import { useState } from "react";
 import Results from "./Results";
 import content from '../framework/compiledContent';
-import { BestPracticeKind } from "../shared/sharedTypes";
 import queryString from 'query-string';
 import { CLIENT_ID, REDIRECT_URI } from "../config";
 
 const Home: NextPage = () => {
   const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());
-
-  const [filterBestPracticesKinds, setFilterBestPracticesKinds] = useState<
-    Set<BestPracticeKind>
-  >(new Set());
+  const [filterSubCohorts, setFilterSubCohorts] = useState<Set<string>>(new Set());
+  const [filterKeywords, setFilterKeywords] = useState<Set<string>>(new Set());
 
   const params = {
     client_id: CLIENT_ID,
@@ -47,16 +44,21 @@ const Home: NextPage = () => {
 
         <Filters
           cohorts={content.cohorts}
+          subCohorts={content.metadata[0].subCohorts}
+          keywords={content.metadata[0].keywords}
           filterCohorts={filterCohorts}
           setFilterCohorts={setFilterCohorts}
-          filterBestPracticesKinds={filterBestPracticesKinds}
-          setFilterBestPracticesKinds={setFilterBestPracticesKinds}
+          filterSubCohorts={filterSubCohorts}
+          setFilterSubCohorts={setFilterSubCohorts}
+          filterKeywords={filterKeywords}
+          setFilterKeywords={setFilterKeywords}
         />
 
         <Results
           content={content}
           filterCohorts={filterCohorts}
-          filterBestPracticesKinds={filterBestPracticesKinds}
+          filterSubCohorts={filterSubCohorts}
+          filterKeywords={filterKeywords}
         />
       </main>
     </div>

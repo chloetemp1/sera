@@ -44,6 +44,7 @@ function generatePathsList(dirPath: string) {
 }
 
 function withoutExtension(path: string) {
+  console.log(path);
   return path.split("." + extensionOf(path))[0];
 }
 
