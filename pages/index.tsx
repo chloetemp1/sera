@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import content from '../framework/compiledContent';
 import { Layout } from "../layouts/Layout";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
-import { CLIENT_ID, REDIRECT_URI } from "../config";
 
 const Home: NextPage = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -12,14 +11,25 @@ const Home: NextPage = () => {
   const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());
   const filterRef = useRef<HTMLDivElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {if (showFilters && filterRef.current) {
-    filterRef.current.scrollIntoView({ behavior: "smooth" })
-  }}, [showFilters, filterRef]);
   const [filterSubCohorts, setFilterSubCohorts] = useState<Set<string>>(
     new Set()
   );
   const [filterKeywords, setFilterKeywords] = useState<Set<string>>(new Set());
+
+  const filteredBestPractices = useMemo(
+    () =>
+      content?.bestPractices?.filter(
+        ({ cohorts, subCohorts, keywords }) =>
+          cohorts.some((cohort) => filterCohorts.has(cohort)) ||
+          subCohorts.some((subCohort) => filterSubCohorts.has(subCohort)) ||
+          keywords.some((keyword) => filterKeywords.has(keyword))
+      ),
+    [filterCohorts, filterSubCohorts, filterKeywords]
+  );
+
+  useEffect(() => {if (showFilters && filterRef.current) {
+    filterRef.current.scrollIntoView({ behavior: "smooth" })
+  }}, [showFilters, filterRef]);
 
   useEffect(() => {if (showResults && resultsRef.current) {
     resultsRef.current.scrollIntoView({ behavior: "smooth" })
@@ -44,9 +54,8 @@ const Home: NextPage = () => {
         {showFilters && (
           <div className="flex flex-col items-center justify-center min-h-screen pt-44 pb-36" ref={filterRef}>
             <Filters
+              filteredBestPractices={filteredBestPractices}
               cohorts={content.cohorts}
-              subCohorts={content.metadata[0].subCohorts}
-              keywords={content.metadata[0].keywords}
               filterCohorts={filterCohorts}
               setFilterCohorts={setFilterCohorts}
               filterSubCohorts={filterSubCohorts}
@@ -61,10 +70,7 @@ const Home: NextPage = () => {
         {showResults && (
           <div className="flex flex-col items-center justify-center min-h-screen pt-44" ref={resultsRef}>
             <Results
-              content={content}
-              filterCohorts={filterCohorts}
-              filterSubCohorts={filterSubCohorts}
-              filterKeywords={filterKeywords}
+              filteredBestPractices={filteredBestPractices}
             />
           </div>
         )}

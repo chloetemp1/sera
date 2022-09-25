@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
-import { Cohort } from "../shared/sharedTypes";
+import { Dispatch, SetStateAction, useMemo } from "react";
+import { BestPractice, Cohort } from "../shared/sharedTypes";
 
 const toggleSetter: <T>(
   setter: Dispatch<SetStateAction<Set<T>>>
@@ -18,9 +18,8 @@ const toggleSetter: <T>(
 };
 
 interface Props {
+  filteredBestPractices: BestPractice[];
   cohorts: Cohort[];
-  subCohorts: string[];
-  keywords: string[];
   filterCohorts: Set<string>;
   setFilterCohorts: Dispatch<SetStateAction<Set<string>>>;
   filterSubCohorts: Set<string>;
@@ -31,9 +30,8 @@ interface Props {
 }
 
 const Filters = ({
+  filteredBestPractices,
   cohorts,
-  subCohorts,
-  keywords,
   filterCohorts,
   setFilterCohorts,
   filterSubCohorts,
@@ -46,6 +44,18 @@ const Filters = ({
   const toggleSubCohort = toggleSetter<string>(setFilterSubCohorts);
   const toggleKeyword = toggleSetter<string>(setFilterKeywords);
 
+  const availableSubCohorts = useMemo(() =>  {
+    const subCohorts = new Set<string>();
+    filteredBestPractices.forEach((bestPractice) => bestPractice.subCohorts.forEach((subCohort) => subCohorts.add(subCohort)));
+    return subCohorts;
+  }, [filteredBestPractices]);
+
+  const availableKeywords = useMemo(() =>  {
+    const keywords = new Set<string>();
+    filteredBestPractices.forEach((bestPractice) => bestPractice.keywords.forEach((keyword) => keywords.add(keyword)));
+    return keywords;
+  }, [filteredBestPractices]);
+  
   const cohortFilters = cohorts?.map((cohort) => (
     <div key={cohort.referenceName}>
       <input
@@ -58,7 +68,7 @@ const Filters = ({
     </div>
   ));
 
-  const subCohortFilters = subCohorts?.map((subCohort) => (
+  const subCohortFilters = Array.from(availableSubCohorts)?.map((subCohort) => (
     <div key={subCohort}>
       <input
         type="checkbox"
@@ -70,7 +80,7 @@ const Filters = ({
     </div>
   ));
 
-  const keywordFilters = keywords?.map((keyword) => (
+  const keywordFilters = Array.from(availableKeywords)?.map((keyword) => (
     <div key={keyword}>
       <input
         type="checkbox"
@@ -90,15 +100,15 @@ const Filters = ({
         
       </div>
 
-      <div>
+      {subCohortFilters.length > 0 && <div>
         <h2 className="pb-4 font-bold">Sub-cohorts</h2>
         <div className="grid grid-cols-3 gap-4">{subCohortFilters}</div>
-      </div>
+      </div>}
 
-      <div>
+      {keywordFilters.length > 0 && <div>
         <h2 className="pb-4 font-bold">Keywords</h2>
         <div className="grid grid-cols-3 gap-4">{keywordFilters}</div>
-      </div>
+      </div>}
 
       <div className="flex justify-center pt-32">
       <button onClick={onClick}>Find Best Practices</button>
