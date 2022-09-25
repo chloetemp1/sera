@@ -1,8 +1,8 @@
 import content from "../framework/compiledContent";
-import { useRouter } from "next/router";
 import Link from "next/link";
-import BestPracticeDisplay from "./BestPracticeDisplay";
+import BestPracticeDisplay from "../components/BestPracticeDisplay";
 import useLocalStorage from "use-local-storage";
+import { Layout } from "../layouts/Layout";
 
 const BestPractice = () => {
   const [favourites] = useLocalStorage(
@@ -21,13 +21,15 @@ const BestPractice = () => {
   );
 
   return (
-    <div>
-      <Link href="/">&laquo; Back</Link>
-      <h1>Your Favourited Best Practices</h1>
-      {bestPractices.map((bestPractice) => (
-        <BestPracticeDisplay key={bestPractice.id} bestPractice={bestPractice} />
-      ))}
-    </div>
+    <Layout title="Persona | Favourites">
+      <div>
+        <Link href="/">&laquo; Back</Link>
+        <h1>Your Favourited Best Practices</h1>
+        {bestPractices.map((bestPractice) => (
+          <BestPracticeDisplay key={bestPractice.id} bestPractice={bestPractice} />
+        ))}
+      </div>
+    </Layout>
   );
 };
 

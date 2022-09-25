@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { BestPractice, CompiledContent } from "../shared/sharedTypes";
-import BestPracticeDisplay from "../pages/BestPracticeDisplay";
+import BestPracticeDisplay from "./BestPracticeDisplay";
 
 
 // const filterByKind = (bestPractices: ResearcherBestPractice[], kind: BestPracticeKind) => {

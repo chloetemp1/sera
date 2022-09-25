@@ -1,8 +1,9 @@
 import axios from "axios";
 import useLocalStorage from "use-local-storage";
 import { Formik } from "formik";
-import { fieldNames, humanReadableFieldNames } from "./BestPracticeDisplay";
+import { fieldNames, humanReadableFieldNames } from "../components/BestPracticeDisplay";
 import { TextField } from "@mui/material";
+import { Layout } from "../layouts/Layout";
 const base64 = require('base-64');
 const yaml = require('yaml');
 
@@ -83,47 +84,49 @@ const SubmitContent = ({}) => {
   //   }
 
   return (
-    <div>
-      <h1>Submit a best practice</h1>
-      <Formik
-        initialValues={{
-          paperName: "",
-          paperLink: "",
-          cohorts: [],
-          subCohorts: [],
-          keywords: [],
-          targetAudience: "",
-          findings: "",
-          summary: "",
-          notes: "",
-          bestPractices: "",
-          methodologyUsed: "",
-          toolsUsed: "",
-          terminology: "",
-          notesOfCaution: "",
-          relatedPapers: "",
-        }}
-        onSubmit={handleSubmit}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isSubmitting,
-          /* and other goodies */
-        }) => (
-          <form onSubmit={handleSubmit}>
-            {fieldNames.map((fieldName) => displayInput(fieldName, handleChange, handleBlur, values))}
-            <button type="submit" disabled={isSubmitting}>
-              Submit
-            </button>
-          </form>
-        )}
-      </Formik>
-    </div>
+    <Layout title="Persona | Submit Content">
+      <div className="w-screen">
+        <h1>Submit a best practice</h1>
+        <Formik
+          initialValues={{
+            paperName: "",
+            paperLink: "",
+            cohorts: [],
+            subCohorts: [],
+            keywords: [],
+            targetAudience: "",
+            findings: "",
+            summary: "",
+            notes: "",
+            bestPractices: "",
+            methodologyUsed: "",
+            toolsUsed: "",
+            terminology: "",
+            notesOfCaution: "",
+            relatedPapers: "",
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+            /* and other goodies */
+          }) => (
+            <form onSubmit={handleSubmit}>
+              {fieldNames.map((fieldName) => displayInput(fieldName, handleChange, handleBlur, values))}
+              <button type="submit" disabled={isSubmitting}>
+                Submit
+              </button>
+            </form>
+          )}
+        </Formik>
+      </div>
+    </Layout>
   );
 };
 

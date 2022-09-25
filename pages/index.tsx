@@ -27,13 +27,11 @@ const Home: NextPage = () => {
 
   return (
     <Layout title="Persona | Software Engineering User Research Tool">
-
-      <main className="max-w-3xl">
-       
+      <main className="flex-col flex-1">
        <div className="flex flex-col items-center justify-center pb-36 space-y-44 h-[calc(100vh-48px)]">
         <h1 className="text-6xl font-bold">Persona</h1>
 
-        <p className="text-xl text-center">
+        <p className="max-w-3xl text-xl text-center">
           Persona is a tool to help <b>software engineering researchers</b>{" "}
           better understand the diverse cohorts they are studying, and to share
           best practices for conducting research with various user cohorts.

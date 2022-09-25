@@ -1,7 +1,7 @@
 import content from '../../framework/compiledContent';
 import { useRouter } from "next/router";
 import Link from "next/link";
-import BestPracticeDisplay from "../BestPracticeDisplay";
+import BestPracticeDisplay from "../../components/BestPracticeDisplay";
 
 const BestPractice = () => {
   const router = useRouter()

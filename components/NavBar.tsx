@@ -11,25 +11,13 @@ const NavBar = () => {
   const queryStringified = queryString.stringify(params);
 
   return (
-
-          // <div>
-      //   <a
-      //     href={`https://github.com/login/oauth/authorize?${queryStringified}`}
-      //   >
-      //     Log in with Github
-      //   </a>
-      // </div>
-
-      // <div>
-      //   <Link href={`/submit`}>Submit content</Link>
-      // </div>
-
-      // <div>
-      //   
-      // </div>
-
     <div className="flex justify-end w-full h-12 py-4 font-semibold">
-      <Link className='mx-4 mr-6' href={`/submit`}>Submit content</Link>
+      <div className='mx-4 mr-4'>
+        <Link href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Log in with Github</Link>
+      </div>
+      <div className='mx-4 mr-6'>
+        <Link href={`/submit`}>Submit content</Link>
+      </div>
       <Link href={"/favourites"}>Your favourites</Link>
   </div>
   )
