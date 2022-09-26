@@ -30,17 +30,17 @@ const BestPracticeCard = ({ bestPractice }: Props) => {
   }
 
   return (
-    <div className="flex p-5 mb-5 bg-gray-200 rounded-lg" key={bestPractice.id}>
+    <div className="flex max-w-5xl p-5 mb-5 bg-gray-200 rounded-lg dark:bg-gray-900" key={bestPractice.id}>
       <div className="pr-2">
         <button onClick={() => toggleFavourited(bestPractice.id)}>
           {isFavourited(bestPractice.id) ? <StarIcon /> : <StarOutlineIcon />}
         </button>
       </div>
       <div className="flex flex-col">
-        <p className="font-bold truncate">{bestPractice.summary}</p>
+        <p className="font-bold">{bestPractice.summary}</p>
         <p>{bestPractice.bestPractices}</p>
         <Link href={`/bestPractice/${bestPractice.id}`}>
-          <p className="font-bold text-right">View More Details</p>
+          <p className="pt-2 font-bold text-right cursor-pointer">View More Details</p>
         </Link>
       </div>
     </div>
