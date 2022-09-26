@@ -37,8 +37,8 @@ const Home: NextPage = () => {
 
   return (
     <Layout title="Persona | Software Engineering User Research Tool">
-      <main className="flex-col flex-1">
-       <div className="flex flex-col items-center justify-center pb-36 space-y-44 h-[calc(100vh-48px)]">
+      <main className="flex-col flex-1 pb-8">
+       <div className="flex flex-col items-center justify-center pb-36 space-y-14 md:space-y-44 min-h-[calc(100vh-56px)]">
         <h1 className="text-6xl font-bold">Persona</h1>
 
         <p className="max-w-3xl text-xl text-center">

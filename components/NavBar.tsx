@@ -11,7 +11,7 @@ const NavBar = () => {
   const queryStringified = queryString.stringify(params);
 
   return (
-    <div className="flex justify-end w-full h-12 py-4 font-semibold">
+    <div className="flex justify-end w-full py-4 font-semibold min-h-12">
       <div className='mx-4 mr-4'>
         <Link href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Log in with Github</Link>
       </div>

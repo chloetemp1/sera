@@ -16,9 +16,11 @@ const Results = ({
   );
 
   return (
-    <div>
+    <div className="flex flex-col">
       <p className="pb-5 text-3xl font-bold text-center">Results</p>
-      {displayedBestPractices}
+      <div className="flex flex-col">
+        {displayedBestPractices}
+      </div>
     </div>
   );
 };
