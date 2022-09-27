@@ -2,9 +2,10 @@ import { BestPractice } from "../shared/sharedTypes";
 import styles from "../styles/Results.module.css";
 import Link from "next/link";
 import LinkIcon from "@mui/icons-material/Link";
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import StarIcon from '@mui/icons-material/Star';
 import Chip from "@mui/material/Chip";
 import useLocalStorage from "use-local-storage";
-import Button from "@mui/material/Button";
 
 export const fieldNames = [
   "paperName",
@@ -64,7 +65,7 @@ const displayField = (
   } else if (Array.isArray(fieldData)) {
     return fieldData.map((name: string) => <Chip key={name} label={name} />);
   } else {
-    return fieldData;
+    return <pre className="font-sans whitespace-pre-wrap">{fieldData}</pre>;
   }
 };
 
@@ -95,32 +96,33 @@ const BestPracticeDisplay = ({ bestPractice }: Props) => {
 
   return (
     <div className={styles.bestPractice} key={bestPractice.id}>
-      <div>
-        <Link href={`/bestPractice/${bestPractice.id}`}>
-          <LinkIcon sx={{ cursor: "pointer" }} />
-        </Link>{" "}
-        Permalink
-      </div>
-      <div>
-        <Button onClick={() => toggleFavourited(bestPractice.id)}>
-          {isFavourited(bestPractice.id) ? "Un-favourite" : "Favourite"}
-        </Button>
+      <div className="flex">
+        <div className="pr-3">
+          <Link href={`/bestPractice/${bestPractice.id}`}>
+            <div>
+              <LinkIcon sx={{ cursor: "pointer" }}></LinkIcon>&#9;&#9;Permalink
+            </div>
+          </Link>{" "}
+        </div>
+        <button onClick={() => toggleFavourited(bestPractice.id)}>
+          {isFavourited(bestPractice.id) ? <div><StarIcon />Unfavourite</div> : <div><StarOutlineIcon />Favourite</div>}
+        </button>
       </div>
       {fieldNames
         .filter(
           (fieldName: string) =>
             bestPractice[fieldName as keyof typeof bestPractice] !==
-              undefined &&
+            undefined &&
             JSON.stringify(
               bestPractice[fieldName as keyof typeof bestPractice]
             ) !== "[]"
         )
         .map((fieldName: string) => (
           <div key={`best-practice-${bestPractice.id}-${fieldName}`}>
-            <h3>
+            <h3 className="pt-5 font-bold">
               {
                 humanReadableFieldNames[
-                  fieldName as keyof typeof humanReadableFieldNames
+                fieldName as keyof typeof humanReadableFieldNames
                 ]
               }
             </h3>
