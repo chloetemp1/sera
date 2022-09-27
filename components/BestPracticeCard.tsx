@@ -36,9 +36,9 @@ const BestPracticeCard = ({ bestPractice }: Props) => {
           {isFavourited(bestPractice.id) ? <StarIcon /> : <StarOutlineIcon />}
         </button>
       </div>
-      <div className="flex flex-col">
-        <p className="font-bold">{bestPractice.summary}</p>
-        <p>{bestPractice.bestPractices}</p>
+      <div className="flex flex-col flex-grow">
+        <p className="font-bold">{bestPractice.summary ?? bestPractice.paperName}</p>
+        <pre className="pt-2 font-sans whitespace-pre-wrap">{bestPractice.bestPractices}</pre>
         <Link href={`/bestPractice/${bestPractice.id}`}>
           <p className="pt-2 font-bold text-right cursor-pointer">View More Details</p>
         </Link>
