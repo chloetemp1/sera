@@ -1,13 +1,14 @@
 import Head from "next/head"
-import NavBar from "../components/NavBar"
+import { NavBar } from "../components/NavBar"
 
 interface LayoutProps {
   title: string
   children: React.ReactNode
+  backButtonRef?: string
 }
 
-export const Layout = ({title, children}: LayoutProps) => {
-  return(
+export const Layout = ({ title, children, backButtonRef }: LayoutProps) => {
+  return (
     <div className="flex flex-col w-full min-h-screen bg-white dark:bg-black dark:text-white">
       <Head>
         <title>{title}</title>
@@ -19,7 +20,7 @@ export const Layout = ({title, children}: LayoutProps) => {
       </Head>
 
       <header className="sticky top-0 flex-none w-full px-10 bg-white dark:bg-black">
-        <NavBar />
+        <NavBar backButtonRef={backButtonRef}/>
       </header>
       <div className="flex flex-col flex-1 w-full px-10">
         {children}
