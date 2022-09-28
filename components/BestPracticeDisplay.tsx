@@ -95,11 +95,11 @@ const BestPracticeDisplay = ({ bestPractice }: Props) => {
     return null;
   }
 
-  const originalCopyElement = {"text": "Copy Page Link", "icon": <AddLinkIcon/>};
+  const originalCopyElement = { "text": "Copy Page Link", "icon": <AddLinkIcon /> };
   const [copyElement, setCopyElement] = useState(originalCopyElement);
   const getLink = () => {
     navigator.clipboard.writeText(document.URL);
-    setCopyElement({ "text": "Copied to Clipboard", "icon": <DoneIcon/>});
+    setCopyElement({ "text": "Copied to Clipboard", "icon": <DoneIcon /> });
     setTimeout(() => {
       setCopyElement(originalCopyElement);
     }, 2000);
