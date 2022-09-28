@@ -13,7 +13,7 @@ const BestPractice = () => {
     return null;
   }
 
-  const backURL = document.referrer;
+  const backURL = window.location.origin;
 
   return (
     <Layout title="Persona | Software Engineering User Research Tool" backButtonRef={new URL(backURL)}>
