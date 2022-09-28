@@ -5,7 +5,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { render } from 'react-dom';
 
 interface NavBarProps {
-  backButtonRef?: string
+  backButtonRef?: URL
 }
 
 export const NavBar = ({ backButtonRef }: NavBarProps) => {
@@ -19,7 +19,7 @@ export const NavBar = ({ backButtonRef }: NavBarProps) => {
 
     const backButton =
       <div className="min-w-fit">
-        <Link href="/">
+        <Link href={backButtonRef ? backButtonRef : ""}>
           <a className=""><ArrowBackIosIcon sx={{ cursor: "pointer" }}></ArrowBackIosIcon>Back</a>
         </Link>
       </div>

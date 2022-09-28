@@ -4,7 +4,7 @@ import { NavBar } from "../components/NavBar"
 interface LayoutProps {
   title: string
   children: React.ReactNode
-  backButtonRef?: string
+  backButtonRef?: URL
 }
 
 export const Layout = ({ title, children, backButtonRef }: LayoutProps) => {

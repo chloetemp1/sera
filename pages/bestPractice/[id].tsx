@@ -12,9 +12,9 @@ const BestPractice = () => {
   if (bestPractice === undefined) {
     return null;
   }
-
+  
   return (
-    <Layout title="Persona | Software Engineering User Research Tool" backButtonRef="/">
+    <Layout title="Persona | Software Engineering User Research Tool" backButtonRef={new URL("/")}>
       <div className="dark:bg-black dark:text-white">
         <div className="flex px-4 mt-10 font-bold row grid place-content-center place-content-center">
           <div className="flex flex-col flex-grow inline text-3xl text-center">
