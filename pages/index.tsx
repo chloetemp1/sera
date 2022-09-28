@@ -4,10 +4,12 @@ import content from '../framework/compiledContent';
 import { Layout } from "../layouts/Layout";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
+import SecondaryFilters from "../components/SecondaryFilters";
 
 const Home: NextPage = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [showSubFilters, setShowSubFilters] = useState(false);
   const [filterCohorts, setFilterCohorts] = useState<Set<string>>(new Set());
   const filterRef = useRef<HTMLDivElement>(null)
   const resultsRef = useRef<HTMLDivElement>(null)
@@ -69,9 +71,22 @@ const Home: NextPage = () => {
 
         {showResults && (
           <div className="flex flex-col items-center justify-center min-h-screen pt-44" ref={resultsRef}>
-            <Results
+            <p className="pb-5 text-3xl font-bold text-center">Results</p>
+            <button className="pb-5" onClick={() => setShowSubFilters((curr) => !curr)}>
+              {showSubFilters ? "Hide sub filters" : "Show sub filters"}
+            </button>
+            {showSubFilters && <SecondaryFilters 
               filteredBestPractices={filteredBestPractices}
-            />
+              filterSubCohorts={filterSubCohorts}
+              setFilterSubCohorts={setFilterSubCohorts}
+              filterKeywords={filterKeywords}
+              setFilterKeywords={setFilterKeywords}
+            />}
+            <div>
+              <Results
+                filteredBestPractices={filteredBestPractices}
+              />
+            </div>
           </div>
         )}
       </main>

@@ -19,28 +19,19 @@ const toggleSetter: <T>(
 
 interface Props {
   filteredBestPractices: BestPractice[];
-  cohorts: Cohort[];
-  filterCohorts: Set<string>;
-  setFilterCohorts: Dispatch<SetStateAction<Set<string>>>;
   filterSubCohorts: Set<string>;
   setFilterSubCohorts: Dispatch<SetStateAction<Set<string>>>;
   filterKeywords: Set<string>;
   setFilterKeywords: Dispatch<SetStateAction<Set<string>>>;
-  onClick: () => void;
 }
 
-const Filters = ({
+const SecondaryFilters = ({
   filteredBestPractices,
-  cohorts,
-  filterCohorts,
-  setFilterCohorts,
   filterSubCohorts,
   setFilterSubCohorts,
   filterKeywords,
   setFilterKeywords,
-  onClick
 }: Props) => {
-  const toggleCohort = toggleSetter<string>(setFilterCohorts);
   const toggleSubCohort = toggleSetter<string>(setFilterSubCohorts);
   const toggleKeyword = toggleSetter<string>(setFilterKeywords);
 
@@ -56,18 +47,6 @@ const Filters = ({
     return keywords;
   }, [filteredBestPractices]);
   
-  const cohortFilters = cohorts?.map((cohort) => (
-    <div key={cohort.referenceName}>
-      <input
-        type="checkbox"
-        checked={filterCohorts.has(cohort.referenceName)}
-        onChange={() => toggleCohort(cohort.referenceName)}
-        id={`checkbox-cohort-${cohort.referenceName}`}
-      />{" "}
-      <label htmlFor={`checkbox-cohort-${cohort.referenceName}`}>{cohort.name}</label>
-    </div>
-  ));
-
   const subCohortFilters = Array.from(availableSubCohorts)?.map((subCohort) => (
     <div key={subCohort}>
       <input
@@ -93,29 +72,20 @@ const Filters = ({
   ));
 
   return (
-    <div className="flex flex-col space-y-10">
-      <div>
-        <h2 className="pb-4 font-bold">Cohorts (select any that are relevant to your research)</h2>
-        <div className="grid grid-cols-3 gap-4">{cohortFilters}</div>
-        
-      </div>
+    <div className="flex flex-col pb-5 space-y-10">
+      {subCohortFilters.length > 0 && 
+        <div>
+          <h2 className="pb-4 font-bold">Sub-cohorts</h2>
+          <div className="grid grid-cols-3 gap-4">{subCohortFilters}</div>
+        </div>}
 
-      {/* {subCohortFilters.length > 0 && <div>
-        <h2 className="pb-4 font-bold">Sub-cohorts</h2>
-        <div className="grid grid-cols-3 gap-4">{subCohortFilters}</div>
-      </div>}
-
-      {keywordFilters.length > 0 && <div>
-        <h2 className="pb-4 font-bold">Keywords</h2>
-        <div className="grid grid-cols-3 gap-4">{keywordFilters}</div>
-      </div>} */}
-
-      <div className="flex justify-center pt-32">
-      <button onClick={onClick}>Find Best Practices</button>
-      </div>
-      
+      {keywordFilters.length > 0 && 
+        <div>
+          <h2 className="pb-4 font-bold">Keywords</h2>
+          <div className="grid grid-cols-3 gap-4">{keywordFilters}</div>
+        </div>}      
     </div>
   );
 };
 
-export default Filters;
+export default SecondaryFilters;
