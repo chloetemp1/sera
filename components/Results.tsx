@@ -17,10 +17,7 @@ const Results = ({
 
   return (
     <div className="flex flex-col">
-      <p className="pb-5 text-3xl font-bold text-center">Results</p>
-      <div className="flex flex-col">
         {displayedBestPractices}
-      </div>
     </div>
   );
 };

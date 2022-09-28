@@ -28,12 +28,12 @@ export const NavBar = ({ backButtonRef }: NavBarProps) => {
         <div className="flex py-4 font-semibold min-h-12">
           {backButtonRef ? backButton : ""}
           <div className="flex justify-end w-full">
-            <div className='mx-4 mr-4'>
+            {/* <div className='mx-4 mr-4'>
               <Link href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Log in with Github</Link>
             </div>
             <div className='mx-4 mr-6'>
               <Link href={`/submit`}>Submit content</Link>
-            </div>
+            </div> */}
             <Link href={"/favourites"}>Your favourites</Link>
           </div>
         </div>
