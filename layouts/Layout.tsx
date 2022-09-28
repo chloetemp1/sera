@@ -4,10 +4,10 @@ import { NavBar } from "../components/NavBar"
 interface LayoutProps {
   title: string
   children: React.ReactNode
-  backButtonRef?: URL
+  backButtonVisible?: boolean
 }
 
-export const Layout = ({ title, children, backButtonRef }: LayoutProps) => {
+export const Layout = ({ title, children, backButtonVisible }: LayoutProps) => {
   return (
     <div className="flex flex-col w-full min-h-screen bg-white dark:bg-black dark:text-white">
       <Head>
@@ -20,7 +20,7 @@ export const Layout = ({ title, children, backButtonRef }: LayoutProps) => {
       </Head>
 
       <header className="sticky top-0 flex-none w-full px-10 bg-white dark:bg-black">
-        <NavBar backButtonRef={backButtonRef} />
+        <NavBar backButtonVisible={backButtonVisible ? backButtonVisible : false} />
       </header>
       <div className="flex flex-col flex-1 w-full px-10">
         {children}

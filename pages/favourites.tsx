@@ -1,5 +1,4 @@
 import content from "../framework/compiledContent";
-import Link from "next/link";
 import useLocalStorage from "use-local-storage";
 import { Layout } from "../layouts/Layout";
 import BestPracticeCard from "../components/BestPracticeCard";
@@ -16,14 +15,12 @@ const BestPractice = () => {
     )
   );
 
-  const backURL = window.location.origin;
-
   const bestPractices = content.bestPractices.filter((bestPractice) =>
     favouritesIds.has(bestPractice.id)
   );
 
   return (
-    <Layout title="Persona | Favourites" backButtonRef={new URL(backURL)}>
+    <Layout title="Persona | Favourites" backButtonVisible={true}>
       <div>
         <p className="pb-5 text-3xl font-bold text-center">Your Favourited Best Practices</p>
         <div className="flex justify-center">
