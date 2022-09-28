@@ -2,7 +2,6 @@ import Link from 'next/link';
 import queryString from 'query-string';
 import { CLIENT_ID, REDIRECT_URI } from '../config';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import { render } from 'react-dom';
 
 interface NavBarProps {
   backButtonRef?: URL
