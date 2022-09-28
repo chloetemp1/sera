@@ -12,7 +12,7 @@ const BestPractice = () => {
   if (bestPractice === undefined) {
     return null;
   }
-  
+
   return (
     <Layout title="Persona | Software Engineering User Research Tool" backButtonRef={new URL("/")}>
       <div className="dark:bg-black dark:text-white">

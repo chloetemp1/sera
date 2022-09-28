@@ -20,7 +20,7 @@ export const Layout = ({ title, children, backButtonRef }: LayoutProps) => {
       </Head>
 
       <header className="sticky top-0 flex-none w-full px-10 bg-white dark:bg-black">
-        <NavBar backButtonRef={backButtonRef}/>
+        <NavBar backButtonRef={backButtonRef} />
       </header>
       <div className="flex flex-col flex-1 w-full px-10">
         {children}
