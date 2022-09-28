@@ -1,10 +1,12 @@
 import { BestPractice } from "../shared/sharedTypes";
 import styles from "../styles/Results.module.css";
-import Link from "next/link";
-import LinkIcon from "@mui/icons-material/Link";
+import AddLinkIcon from '@mui/icons-material/AddLink';
+import DoneIcon from '@mui/icons-material/Done';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import StarIcon from '@mui/icons-material/Star';
 import Chip from "@mui/material/Chip";
 import useLocalStorage from "use-local-storage";
-import Button from "@mui/material/Button";
+import { useState } from "react";
 
 export const fieldNames = [
   "paperName",
@@ -62,9 +64,9 @@ const displayField = (
   if (fieldData === undefined) {
     return "[none]";
   } else if (Array.isArray(fieldData)) {
-    return fieldData.map((name: string) => <Chip key={name} label={name} />);
+    return fieldData.map((name: string) => <div key={name} className="pr-1 inline"><Chip label={name} /></div>);
   } else {
-    return fieldData;
+    return <pre className="font-sans whitespace-pre-wrap">{fieldData}</pre>;
   }
 };
 
@@ -89,38 +91,45 @@ const BestPracticeDisplay = ({ bestPractice }: Props) => {
     bestPracticeId in favourites &&
     favourites[bestPracticeId as keyof typeof favourites] === true;
 
+  const originalCopyElement = { "text": "Copy Page Link", "icon": <AddLinkIcon /> };
+  const [copyElement, setCopyElement] = useState(originalCopyElement);
+  const getLink = () => {
+    navigator.clipboard.writeText(document.URL);
+    setCopyElement({ "text": "Copied to Clipboard", "icon": <DoneIcon /> });
+    setTimeout(() => {
+      setCopyElement(originalCopyElement);
+    }, 2000);
+  }
+
   if (bestPractice === undefined) {
     return null;
   }
 
   return (
     <div className={styles.bestPractice} key={bestPractice.id}>
-      <div>
-        <Link href={`/bestPractice/${bestPractice.id}`}>
-          <LinkIcon sx={{ cursor: "pointer" }} />
-        </Link>{" "}
-        Permalink
-      </div>
-      <div>
-        <Button onClick={() => toggleFavourited(bestPractice.id)}>
-          {isFavourited(bestPractice.id) ? "Un-favourite" : "Favourite"}
-        </Button>
+      <div className="flex">
+        <button className="pr-5" onClick={() => toggleFavourited(bestPractice.id)}>
+          {isFavourited(bestPractice.id) ? <div><StarIcon />Unfavourite</div> : <div><StarOutlineIcon />Favourite</div>}
+        </button>
+        <a className="pr-3 hover:cursor-pointer" onClick={() => getLink()}>
+          {copyElement.icon}<div className="pl-1 inline">{copyElement.text}</div>
+        </a>
       </div>
       {fieldNames
         .filter(
           (fieldName: string) =>
             bestPractice[fieldName as keyof typeof bestPractice] !==
-              undefined &&
+            undefined &&
             JSON.stringify(
               bestPractice[fieldName as keyof typeof bestPractice]
             ) !== "[]"
         )
         .map((fieldName: string) => (
           <div key={`best-practice-${bestPractice.id}-${fieldName}`}>
-            <h3>
+            <h3 className="pt-5 font-bold">
               {
                 humanReadableFieldNames[
-                  fieldName as keyof typeof humanReadableFieldNames
+                fieldName as keyof typeof humanReadableFieldNames
                 ]
               }
             </h3>
