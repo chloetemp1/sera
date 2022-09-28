@@ -64,7 +64,7 @@ const displayField = (
   if (fieldData === undefined) {
     return "[none]";
   } else if (Array.isArray(fieldData)) {
-    return fieldData.map((name: string) => <div className="pr-1 inline"><Chip key={name} label={name} /></div>);
+    return fieldData.map((name: string) => <div key={name} className="pr-1 inline"><Chip label={name} /></div>);
   } else {
     return <pre className="font-sans whitespace-pre-wrap">{fieldData}</pre>;
   }
@@ -91,10 +91,6 @@ const BestPracticeDisplay = ({ bestPractice }: Props) => {
     bestPracticeId in favourites &&
     favourites[bestPracticeId as keyof typeof favourites] === true;
 
-  if (bestPractice === undefined) {
-    return null;
-  }
-
   const originalCopyElement = { "text": "Copy Page Link", "icon": <AddLinkIcon /> };
   const [copyElement, setCopyElement] = useState(originalCopyElement);
   const getLink = () => {
@@ -103,6 +99,10 @@ const BestPracticeDisplay = ({ bestPractice }: Props) => {
     setTimeout(() => {
       setCopyElement(originalCopyElement);
     }, 2000);
+  }
+
+  if (bestPractice === undefined) {
+    return null;
   }
 
   return (
