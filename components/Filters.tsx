@@ -111,7 +111,7 @@ const Filters = ({
       </div>} */}
 
       <div className="flex justify-center pt-32">
-      <button onClick={onClick}>Find Best Practices</button>
+      <button className="px-4 py-2 font-semibold text-gray-100 border border-gray-100 rounded shadow bg-grey-100 hover:bg-gray-800" onClick={onClick}>Find Best Practices</button>
       </div>
       
     </div>

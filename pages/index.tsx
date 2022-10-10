@@ -5,6 +5,9 @@ import { Layout } from "../layouts/Layout";
 import Filters from "../components/Filters";
 import Results from "../components/Results";
 import SecondaryFilters from "../components/SecondaryFilters";
+import Button from "@mui/material/Button";
+
+
 
 const Home: NextPage = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -49,7 +52,7 @@ const Home: NextPage = () => {
           best practices for conducting research with various user cohorts.
         </p>
 
-        <button onClick={() => setShowFilters(true)}>Get Started</button>
+        <button className="px-4 py-2 font-semibold text-gray-100 border border-gray-100 rounded shadow bg-grey-100 hover:bg-gray-800" onClick={() => setShowFilters(true)}>Get Started</button>
 
         </div>
 
