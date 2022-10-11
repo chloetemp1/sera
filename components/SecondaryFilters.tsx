@@ -47,7 +47,7 @@ const SecondaryFilters = ({
     return keywords;
   }, [filteredBestPractices]);
   
-  const subCohortFilters = Array.from(availableSubCohorts)?.map((subCohort) => (
+  const subCohortFilters = Array.from(availableSubCohorts).sort()?.map((subCohort) => (
     <div key={subCohort}>
       <input
         type="checkbox"
@@ -59,7 +59,7 @@ const SecondaryFilters = ({
     </div>
   ));
 
-  const keywordFilters = Array.from(availableKeywords)?.map((keyword) => (
+  const keywordFilters = Array.from(availableKeywords).sort()?.map((keyword) => (
     <div key={keyword}>
       <input
         type="checkbox"
