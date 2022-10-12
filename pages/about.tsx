@@ -4,13 +4,12 @@ const AboutPage = () => {
   return (
     <Layout title="Persona | Favourites" backButtonVisible={true}>
       <div>
-        <p className="pb-5 text-3xl font-bold text-center">About SERADiPITy</p>
+        <p className="pb-5 text-3xl font-bold text-center">About SERA</p>
         <div className="flex flex-col items-center">
           <div className="flex flex-col text-xl text-center gap-9 max-w-prose">
             <p>
-              SERADiPITy is an acronym for: Software Engineering Research
-              Assistant for Diverse Participants and Inclusive Technology, but
-              it is more than just a catchy abbreviation. This tool was
+              SERA is an acronym for: Software Engineering Research Assistant,
+              but it is more than just a catchy abbreviation. This tool was
               developed by a student team at Monash University in response to
               addressing the challenge of finding best practices, tools, and
               methodologies when preparing to conduct human centric studies.
