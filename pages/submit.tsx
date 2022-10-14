@@ -78,10 +78,12 @@ const SubmitContent = ({}) => {
 
     const branchName = `user-submitted-content-${contentSha}`;
 
+    console.log('sr', shaResp, branchName, contentYaml, contentSha, topCommitSha);
+
     // Create a new branch
     const branchCreateResp = await axios.post(`${API_BASE}/repos/chloebrett/sera/git/refs`, {
       ref: `refs/heads/${branchName}`,
-      topCommitSha,
+      sha: topCommitSha,
     }, authConfig);
 
     console.log('bcr', branchCreateResp);
