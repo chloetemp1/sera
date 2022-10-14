@@ -6,7 +6,7 @@ import useLocalStorage from "use-local-storage";
 const GithubLogin = ({}) => {
   const router = useRouter();
 
-  const [_, setAuthData] = useLocalStorage("githubAuth", "");
+  const [authData, setAuthData] = useLocalStorage("githubAuth", "");
 
   useEffect(() => {
     const { code } = router.query;
@@ -16,10 +16,20 @@ const GithubLogin = ({}) => {
       return data.data;
     };
 
-    getAuthData().then((data) => setAuthData(data));
+    getAuthData().then((data) => {
+      setAuthData(data);
+    });
+  }, [router, setAuthData]);
+
+  useEffect(() => {
+    if (authData === "") {
+      return;
+    }
+
+    console.log(authData);
 
     router.push('/');
-  }, [router, setAuthData]);
+  }, [router, authData]);
 
   return (
     <div>
