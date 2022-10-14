@@ -69,12 +69,12 @@ const SubmitContent = ({}) => {
     };
 
     // Get the sha ref of the top commit on `main` right now
-    const shaResp = await axios.get(`${API_BASE}/repos/chloebrett/sera/git/ref/heads/main`)
+    const shaResp = await axios.get(`${API_BASE}/repos/chloebrett/sera/git/ref/heads/main`);
 
     const { sha: topCommitSha } = shaResp.data.object;
 
     const contentYaml = yaml.stringify(values);
-    const contentSha = sha1(contentYaml);
+    const contentSha = sha1(contentYaml).substring(0, 8);
 
     const branchName = `user-submitted-content-${contentSha}`;
 
@@ -105,7 +105,7 @@ const SubmitContent = ({}) => {
     console.log('fcr', fileCreateResp);
 
     // Create the PR
-    const prCreateResp = await axios.put(
+    const prCreateResp = await axios.post(
       `${API_BASE}/repos/chloebrett/sera/pulls`,
       {
         owner: 'chloebrett',
