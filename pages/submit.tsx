@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import { fieldNames, humanReadableFieldNames } from "../components/BestPracticeDisplay";
 import { TextField } from "@mui/material";
 import { Layout } from "../layouts/Layout";
+import { useState } from "react";
 const base64 = require('base-64');
 const yaml = require('yaml');
 const sha1 = require("sha1");
@@ -39,27 +40,38 @@ const displayInput = (fieldName: string, handleChange: any, handleBlur: any, val
 };
 
 const API_BASE = 'https://api.github.com';
+const REPO_BASE = `${API_BASE}/repos/chloebrett/sera`;
+
+enum AsyncState {
+  READY,
+  LOADING,
+  SUCCESS,
+  ERROR
+}
 
 const SubmitContent = ({}) => {
   const [authData] = useLocalStorage<{ access_token: string }>("githubAuth", {
     access_token: "",
   });
 
+  const [asyncState, setAsyncState] = useState<AsyncState>(AsyncState.READY);
+
+  const [pullRequestUrl, setPullRequestUrl] = useState<string>("");
+
+  const trySubmit = async (values: any) => {
+    try {
+      setAsyncState(AsyncState.LOADING);
+
+      await handleSubmit(values);
+
+      setAsyncState(AsyncState.SUCCESS);
+    } catch(err) {
+      setAsyncState(AsyncState.ERROR);
+    }
+  }
+
   const handleSubmit = async (values: any) => {
     const { access_token } = authData;
-
-    // const octokit = new Octokit({
-    //   auth: access_token,
-    // });
-
-    // const data = await octokit.request("POST /repos/{owner}/{repo}/pulls", {
-    //   owner: "chloebrett",
-    //   repo: "sera",
-    //   title: "Amazing new feature",
-    //   body: "Please pull these awesome changes in!",
-    //   head: "octocat:new-feature",
-    //   base: "master",
-    // });
 
     const authConfig = {
       headers: {
@@ -69,7 +81,7 @@ const SubmitContent = ({}) => {
     };
 
     // Get the sha ref of the top commit on `main` right now
-    const shaResp = await axios.get(`${API_BASE}/repos/chloebrett/sera/git/ref/heads/main`);
+    const shaResp = await axios.get(`${REPO_BASE}/git/ref/heads/main`);
 
     const { sha: topCommitSha } = shaResp.data.object;
 
@@ -81,7 +93,7 @@ const SubmitContent = ({}) => {
     console.log('sr', shaResp, branchName, contentYaml, contentSha, topCommitSha);
 
     // Create a new branch
-    const branchCreateResp = await axios.post(`${API_BASE}/repos/chloebrett/sera/git/refs`, {
+    const branchCreateResp = await axios.post(`${REPO_BASE}/git/refs`, {
       ref: `refs/heads/${branchName}`,
       sha: topCommitSha,
     }, authConfig);
@@ -92,7 +104,7 @@ const SubmitContent = ({}) => {
 
     // Create the file
     const fileCreateResp = await axios.put(
-      `${API_BASE}/repos/chloebrett/sera/contents/framework/content-user/bestPractices/${contentSha}.yaml`,
+      `${REPO_BASE}/contents/framework/content-user/bestPractices/${contentSha}.yaml`,
       {
         message: "Add user-generated content",
         committer: { name: "User Generated Content Submission", email: "noreply@github.com" },
@@ -106,11 +118,11 @@ const SubmitContent = ({}) => {
 
     // Create the PR
     const prCreateResp = await axios.post(
-      `${API_BASE}/repos/chloebrett/sera/pulls`,
+      `${REPO_BASE}/pulls`,
       {
         owner: 'chloebrett',
         repo: 'sera',
-        title: "Add user-generated content",
+        title: `User submission: ${values.paperName}`,
         body: 'Automated PR for user-generated content',
         head: branchName,
         base: 'main',
@@ -119,14 +131,38 @@ const SubmitContent = ({}) => {
     );
 
     console.log('pcr', prCreateResp);
+
+    const { url: prUrl } = prCreateResp.data;
+
+    setPullRequestUrl(prUrl);
   }
 
-  //   if (authData === "") {
-  //     return null;
-  //   }
+  if (asyncState === AsyncState.LOADING) {
+    return
+    <Layout title="SERA | Submit Content">
+      Submitting form...
+    </Layout>
+  }
+
+  if (asyncState === AsyncState.SUCCESS) {
+    return 
+    <Layout title="SERA | Submit Content">
+      <h1>Success!</h1>
+      <div>The data was successfully submitted as a pull request on the repository!</div>
+      <a
+        href={pullRequestUrl}
+        style={{ textDecoration: "underline" }}
+        target="_BLANK"
+        rel="noreferrer"
+      >
+        Click here to view the pull request.
+      </a>
+    </Layout>
+  }
 
   return (
     <Layout title="SERA | Submit Content">
+      {asyncState === AsyncState.ERROR && <div>There was an error with the data submission. Please try again...</div>}
       <div className="w-screen">
         <h1>Submit a best practice</h1>
         <Formik
@@ -147,7 +183,7 @@ const SubmitContent = ({}) => {
             notesOfCaution: "",
             relatedPapers: "",
           }}
-          onSubmit={handleSubmit}
+          onSubmit={trySubmit}
         >
           {({
             values,
