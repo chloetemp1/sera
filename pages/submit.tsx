@@ -187,7 +187,7 @@ const SubmitContent = ({}) => {
 
     console.log('pcr', prCreateResp);
 
-    const { url: prUrl } = prCreateResp.data;
+    const { html_url: prUrl } = prCreateResp.data;
 
     setPullRequestUrl(prUrl);
   };
