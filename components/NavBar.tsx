@@ -41,7 +41,7 @@ export const NavBar = ({ backButtonVisible }: NavBarProps) => {
             <Link href={'/favourites'}>Favourites</Link>
             <Link href={`/submit`}>Submit content</Link>
             <Link
-              href={`https://github.com/login/oauth/authorize?${queryStringified}`}
+              href={`https://github.com/apps/sera-monash/installations/new`}
             >
               Log in with Github
             </Link>

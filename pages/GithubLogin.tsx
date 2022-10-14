@@ -30,7 +30,7 @@ const GithubLogin = ({}) => {
 
     console.log(authData);
 
-    router.push('https://github.com/apps/sera-monash/installations/new');
+    router.push('/');
   }, [router, authData]);
 
   return (
