@@ -30,7 +30,7 @@ const GithubLogin = ({}) => {
 
     console.log(authData);
 
-    router.push('/');
+    // router.push('/');
   }, [router, authData]);
 
   return (
