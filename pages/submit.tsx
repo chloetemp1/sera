@@ -49,7 +49,7 @@ const SubmitContent = ({}) => {
 
     // const data = await octokit.request("POST /repos/{owner}/{repo}/pulls", {
     //   owner: "chloebrett",
-    //   repo: "persona",
+    //   repo: "sera",
     //   title: "Amazing new feature",
     //   body: "Please pull these awesome changes in!",
     //   head: "octocat:new-feature",
@@ -67,7 +67,7 @@ const SubmitContent = ({}) => {
 
     // Create the file
     const { data } = await axios.put(
-      `https://api.github.com/repos/chloebrett/persona/contents/framework/content-user/bestPractices/newFile.yaml`,
+      `https://api.github.com/repos/chloebrett/sera/contents/framework/content-user/bestPractices/newFile.yaml`,
       {
         message: "Add user-generated content",
         committer: { name: "User Generated Content Submission", email: "noreply@github.com" },
@@ -84,7 +84,7 @@ const SubmitContent = ({}) => {
   //   }
 
   return (
-    <Layout title="Persona | Submit Content">
+    <Layout title="SERA | Submit Content">
       <div className="w-screen">
         <h1>Submit a best practice</h1>
         <Formik
