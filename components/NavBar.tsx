@@ -36,14 +36,15 @@ export const NavBar = ({ backButtonVisible }: NavBarProps) => {
         <div className="flex py-4 font-semibold min-h-12">
           {backButtonVisible ? backButton : ''}
           <div className="flex justify-end w-full gap-x-5">
-            {/* <div className='mx-4 mr-4'>
-              <Link href={`https://github.com/login/oauth/authorize?${queryStringified}`}>Log in with Github</Link>
-            </div>
-            <div className='mx-4 mr-6'>
-              <Link href={`/submit`}>Submit content</Link>
-            </div> */}
+            <Link href={'/'}>Home</Link>
             <Link href={'/about'}>About</Link>
             <Link href={'/favourites'}>Favourites</Link>
+            <Link href={`/submit`}>Submit content</Link>
+            <Link
+              href={`https://github.com/login/oauth/authorize?${queryStringified}`}
+            >
+              Log in with Github
+            </Link>
           </div>
         </div>
       </div>
