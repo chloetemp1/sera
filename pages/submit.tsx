@@ -1,16 +1,57 @@
-import axios from "axios";
-import useLocalStorage from "use-local-storage";
-import { Formik } from "formik";
-import { fieldNames, humanReadableFieldNames } from "../components/BestPracticeDisplay";
-import { TextField } from "@mui/material";
-import { Layout } from "../layouts/Layout";
-import { useState } from "react";
+import axios from 'axios';
+import useLocalStorage from 'use-local-storage';
+import { Formik } from 'formik';
+import {
+  fieldNames,
+  humanReadableFieldNames,
+} from '../components/BestPracticeDisplay';
+import { TextField } from '@mui/material';
+import { Layout } from '../layouts/Layout';
+import { useState } from 'react';
 const base64 = require('base-64');
 const yaml = require('yaml');
-const sha1 = require("sha1");
+const sha1 = require('sha1');
+import content from '../framework/compiledContent';
+import AutocompleteMultiSelect from '../components/AutocompleteMultiSelect';
 
-const displayInput = (fieldName: string, handleChange: any, handleBlur: any, values: any) => {
-  const largeFields = ['findings', 'summary', 'notes', 'bestPractices', 'methodology', 'tools', 'terminology', 'notesOfCaution'];
+const displayInput = (
+  fieldName: string,
+  handleChange: any,
+  handleBlur: any,
+  values: any,
+  setFieldValue: any,
+) => {
+  const largeFields = [
+    'findings',
+    'summary',
+    'notes',
+    'bestPractices',
+    'methodology',
+    'tools',
+    'terminology',
+    'notesOfCaution',
+  ];
+
+  // Maps field names to the default dropdown values
+  const autocompleteFields: Record<string, string[]> = content.metadata[0];
+
+  if (Object.keys(autocompleteFields).includes(fieldName)) {
+    return (
+      <div key={fieldName}>
+        <AutocompleteMultiSelect
+          possibleValues={autocompleteFields[fieldName]}
+          chosenValues={values[fieldName as keyof typeof values]}
+          setFieldValue={setFieldValue}
+          fieldName={fieldName}
+          fieldTitle={
+            humanReadableFieldNames[
+              fieldName as keyof typeof humanReadableFieldNames
+            ]
+          }
+        />
+      </div>
+    );
+  }
 
   return (
     <div key={fieldName}>
@@ -46,17 +87,17 @@ enum AsyncState {
   READY,
   LOADING,
   SUCCESS,
-  ERROR
+  ERROR,
 }
 
 const SubmitContent = ({}) => {
-  const [authData] = useLocalStorage<{ access_token: string }>("githubAuth", {
-    access_token: "",
+  const [authData] = useLocalStorage<{ access_token: string }>('githubAuth', {
+    access_token: '',
   });
 
   const [asyncState, setAsyncState] = useState<AsyncState>(AsyncState.READY);
 
-  const [pullRequestUrl, setPullRequestUrl] = useState<string>("");
+  const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
 
   const trySubmit = async (values: any) => {
     try {
@@ -65,17 +106,17 @@ const SubmitContent = ({}) => {
       await doSubmit(values);
 
       setAsyncState(AsyncState.SUCCESS);
-    } catch(err) {
+    } catch (err) {
       setAsyncState(AsyncState.ERROR);
     }
-  }
+  };
 
   const doSubmit = async (values: any) => {
     const { access_token } = authData;
 
     const authConfig = {
       headers: {
-        Accept: "application/vnd.github+json",
+        Accept: 'application/vnd.github+json',
         Authorization: `Bearer ${access_token}`,
       },
     };
@@ -90,13 +131,24 @@ const SubmitContent = ({}) => {
 
     const branchName = `user-submitted-content-${contentSha}`;
 
-    console.log('sr', shaResp, branchName, contentYaml, contentSha, topCommitSha);
+    console.log(
+      'sr',
+      shaResp,
+      branchName,
+      contentYaml,
+      contentSha,
+      topCommitSha
+    );
 
     // Create a new branch
-    const branchCreateResp = await axios.post(`${REPO_BASE}/git/refs`, {
-      ref: `refs/heads/${branchName}`,
-      sha: topCommitSha,
-    }, authConfig);
+    const branchCreateResp = await axios.post(
+      `${REPO_BASE}/git/refs`,
+      {
+        ref: `refs/heads/${branchName}`,
+        sha: topCommitSha,
+      },
+      authConfig
+    );
 
     console.log('bcr', branchCreateResp);
 
@@ -106,8 +158,11 @@ const SubmitContent = ({}) => {
     const fileCreateResp = await axios.put(
       `${REPO_BASE}/contents/framework/content-user/bestPractices/${contentSha}.yaml`,
       {
-        message: "Add user-generated content",
-        committer: { name: "User Generated Content Submission", email: "noreply@github.com" },
+        message: 'Add user-generated content',
+        committer: {
+          name: 'User Generated Content Submission',
+          email: 'noreply@github.com',
+        },
         content,
         branch: branchName,
       },
@@ -135,53 +190,58 @@ const SubmitContent = ({}) => {
     const { url: prUrl } = prCreateResp.data;
 
     setPullRequestUrl(prUrl);
-  }
+  };
 
   if (asyncState === AsyncState.LOADING) {
-    return (<Layout title="SERA | Submit Content">
-    Submitting form...
-  </Layout>);
+    return <Layout title="SERA | Submit Content">Submitting form...</Layout>;
   }
 
   if (asyncState === AsyncState.SUCCESS) {
     return (
       <Layout title="SERA | Submit Content">
-      <h1>Success!</h1>
-      <div>The data was successfully submitted as a pull request on the repository!</div>
-      <a
-        href={pullRequestUrl}
-        style={{ textDecoration: "underline" }}
-        target="_BLANK"
-        rel="noreferrer"
-      >
-        Click here to view the pull request.
-      </a>
-    </Layout>
-    )
+        <h1>Success!</h1>
+        <div>
+          The data was successfully submitted as a pull request on the
+          repository!
+        </div>
+        <a
+          href={pullRequestUrl}
+          style={{ textDecoration: 'underline' }}
+          target="_BLANK"
+          rel="noreferrer"
+        >
+          Click here to view the pull request.
+        </a>
+      </Layout>
+    );
   }
 
   return (
     <Layout title="SERA | Submit Content">
-      {asyncState === AsyncState.ERROR && <div>There was an error with the data submission. Please try again...</div>}
+      {asyncState === AsyncState.ERROR && (
+        <div>
+          There was an error with the data submission. Please try again...
+        </div>
+      )}
       <div className="w-screen">
         <h1>Submit a best practice</h1>
         <Formik
           initialValues={{
-            paperName: "",
-            paperLink: "",
+            paperName: '',
+            paperLink: '',
             cohorts: [],
             subCohorts: [],
             keywords: [],
-            targetAudience: "",
-            findings: "",
-            summary: "",
-            notes: "",
-            bestPractices: "",
-            methodologyUsed: "",
-            toolsUsed: "",
-            terminology: "",
-            notesOfCaution: "",
-            relatedPapers: "",
+            targetAudience: '',
+            findings: '',
+            summary: '',
+            notes: '',
+            bestPractices: '',
+            methodologyUsed: '',
+            toolsUsed: '',
+            terminology: '',
+            notesOfCaution: '',
+            relatedPapers: '',
           }}
           onSubmit={trySubmit}
         >
@@ -193,10 +253,13 @@ const SubmitContent = ({}) => {
             handleBlur,
             handleSubmit,
             isSubmitting,
+            setFieldValue
             /* and other goodies */
           }) => (
             <form onSubmit={handleSubmit}>
-              {fieldNames.map((fieldName) => displayInput(fieldName, handleChange, handleBlur, values))}
+              {fieldNames.map((fieldName) =>
+                displayInput(fieldName, handleChange, handleBlur, values, setFieldValue)
+              )}
               <button type="submit" disabled={isSubmitting}>
                 Submit
               </button>
