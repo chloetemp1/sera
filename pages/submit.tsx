@@ -11,11 +11,13 @@ const displayInput = (fieldName: string, handleChange: any, handleBlur: any, val
   const largeFields = ['findings', 'summary', 'notes', 'bestPractices', 'methodology', 'tools', 'terminology', 'notesOfCaution'];
 
   return (
-    <div>
+    <div key={fieldName}>
       <TextField
         sx={{
           margin: '10px',
           width: 'calc(50% - 20px)',
+          color: 'black',
+          background: 'white',
         }}
         key={fieldName}
         type="text"

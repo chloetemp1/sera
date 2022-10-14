@@ -11,6 +11,8 @@ const GithubLogin = ({}) => {
   useEffect(() => {
     const { code } = router.query;
 
+    console.log('code', code);
+
     const getAuthData = async () => {
       const { data } = await axios.get(`/api/githubLogin?code=${code}`);
       return data.data;
