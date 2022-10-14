@@ -63,7 +63,7 @@ const SubmitContent = ({}) => {
       setAsyncState(AsyncState.LOADING);
 
       await handleSubmit(values);
-      
+
       setAsyncState(AsyncState.SUCCESS);
     } catch(err) {
       setAsyncState(AsyncState.ERROR);
@@ -138,13 +138,15 @@ const SubmitContent = ({}) => {
   }
 
   if (asyncState === AsyncState.LOADING) {
-    return <div>
+    return
+    <Layout title="SERA | Submit Content">
       Submitting form...
-    </div>
+    </Layout>
   }
 
   if (asyncState === AsyncState.SUCCESS) {
-    return <div>
+    return 
+    <Layout title="SERA | Submit Content">
       <h1>Success!</h1>
       <div>The data was successfully submitted as a pull request on the repository!</div>
       <a
@@ -155,7 +157,7 @@ const SubmitContent = ({}) => {
       >
         Click here to view the pull request.
       </a>
-    </div>
+    </Layout>
   }
 
   return (
