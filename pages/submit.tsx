@@ -140,23 +140,25 @@ const SubmitContent = ({}) => {
       topCommitSha
     );
 
-    // Create a new branch
-    const branchCreateResp = await axios.post(
-      `${REPO_BASE}/git/refs`,
+    // Create a fork of the PR so that we can write a file to it
+    const forkCreateResp = await axios.post(
+      `${REPO_BASE}/forks`,
       {
-        ref: `refs/heads/${branchName}`,
-        sha: topCommitSha,
+        default_branch_only: true
       },
       authConfig
     );
 
-    console.log('bcr', branchCreateResp);
+    console.log('forkcr', forkCreateResp);
+
+    const forkRepo = forkCreateResp.data.full_name;
+    const forkOwner = forkCreateResp.data.owner.login;
 
     const content = base64.encode(contentYaml);
 
     // Create the file
     const fileCreateResp = await axios.put(
-      `${REPO_BASE}/contents/framework/content-user/bestPractices/${contentSha}.yaml`,
+      `${API_BASE}/${forkRepo}/contents/framework/content-user/bestPractices/${contentSha}.yaml`,
       {
         message: 'Add user-generated content',
         committer: {
@@ -164,12 +166,12 @@ const SubmitContent = ({}) => {
           email: 'noreply@github.com',
         },
         content,
-        branch: branchName,
+        branch: 'main',
       },
       authConfig
     );
 
-    console.log('fcr', fileCreateResp);
+    console.log('filecr', fileCreateResp);
 
     // Create the PR
     const prCreateResp = await axios.post(
@@ -179,7 +181,7 @@ const SubmitContent = ({}) => {
         repo: 'sera',
         title: `User submission: ${values.paperName}`,
         body: 'Automated PR for user-generated content',
-        head: branchName,
+        head: `${forkOwner}:main`,
         base: 'main',
       },
       authConfig
