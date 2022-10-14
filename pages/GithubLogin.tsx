@@ -13,6 +13,10 @@ const GithubLogin = ({}) => {
 
     console.log('code', code);
 
+    if (code === undefined) {
+      return;
+    }
+
     const getAuthData = async () => {
       const { data } = await axios.get(`/api/githubLogin?code=${code}`);
       return data.data;
@@ -24,13 +28,13 @@ const GithubLogin = ({}) => {
   }, [router, setAuthData]);
 
   useEffect(() => {
-    if (authData === "") {
+    if (authData === "" || JSON.parse(authData).error) {
       return;
     }
 
     console.log(authData);
 
-    // router.push('/');
+    router.push('/');
   }, [router, authData]);
 
   return (
