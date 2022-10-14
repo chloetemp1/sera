@@ -2,13 +2,11 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import useLocalStorage from "use-local-storage";
-import queryString from "query-string";
 
 const GithubLogin = ({}) => {
   const router = useRouter();
-  console.log(router.query);
 
-  const [authData, setAuthData] = useLocalStorage("githubAuth", "");
+  const [_, setAuthData] = useLocalStorage("githubAuth", "");
 
   useEffect(() => {
     const { code } = router.query;
@@ -19,14 +17,13 @@ const GithubLogin = ({}) => {
     };
 
     getAuthData().then((data) => setAuthData(data));
+
+    router.push('/');
   }, [router, setAuthData]);
 
   return (
     <div>
-      {JSON.stringify(router.query)}
-      {authData === ""
-        ? "authenticating..."
-        : "auth data saved to local storage"}
+      Redirecting...
     </div>
   );
 };
