@@ -28,7 +28,7 @@ const GithubLogin = ({}) => {
   }, [router, setAuthData]);
 
   useEffect(() => {
-    if (authData === "" || JSON.parse(authData).error) {
+    if (authData === "" || (authData as any).error) {
       return;
     }
 
