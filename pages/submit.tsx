@@ -6,6 +6,7 @@ import { TextField } from "@mui/material";
 import { Layout } from "../layouts/Layout";
 const base64 = require('base-64');
 const yaml = require('yaml');
+const sha1 = require("sha1");
 
 const displayInput = (fieldName: string, handleChange: any, handleBlur: any, values: any) => {
   const largeFields = ['findings', 'summary', 'notes', 'bestPractices', 'methodology', 'tools', 'terminology', 'notesOfCaution'];
@@ -37,6 +38,8 @@ const displayInput = (fieldName: string, handleChange: any, handleBlur: any, val
   );
 };
 
+const API_BASE = 'https://api.github.com';
+
 const SubmitContent = ({}) => {
   const [authData] = useLocalStorage<{ access_token: string }>("githubAuth", {
     access_token: "",
@@ -65,20 +68,55 @@ const SubmitContent = ({}) => {
       },
     };
 
-    const content = base64.encode(yaml.stringify(values));
+    // Get the sha ref of the top commit on `main` right now
+    const shaResp = await axios.get(`${API_BASE}/repos/chloebrett/sera/git/ref/heads/main`)
+
+    const { sha: topCommitSha } = shaResp.data.object;
+
+    const contentYaml = yaml.stringify(values);
+    const contentSha = sha1(contentYaml);
+
+    const branchName = `user-submitted-content-${contentSha}`;
+
+    // Create a new branch
+    const branchCreateResp = await axios.post(`${API_BASE}/repos/chloebrett/sera/git/refs`, {
+      ref: `refs/heads/${branchName}`,
+      topCommitSha,
+    }, authConfig);
+
+    console.log('bcr', branchCreateResp);
+
+    const content = base64.encode(contentYaml);
 
     // Create the file
-    const { data } = await axios.put(
-      `https://api.github.com/repos/chloebrett/sera/contents/framework/content-user/bestPractices/newFile.yaml`,
+    const fileCreateResp = await axios.put(
+      `${API_BASE}/repos/chloebrett/sera/contents/framework/content-user/bestPractices/${contentSha}.yaml`,
       {
         message: "Add user-generated content",
         committer: { name: "User Generated Content Submission", email: "noreply@github.com" },
         content,
+        branch: branchName,
       },
       authConfig
     );
 
-    console.log(data);
+    console.log('fcr', fileCreateResp);
+
+    // Create the PR
+    const prCreateResp = await axios.put(
+      `${API_BASE}/repos/chloebrett/sera/pulls`,
+      {
+        owner: 'chloebrett',
+        repo: 'sera',
+        title: "Add user-generated content",
+        body: 'Automated PR for user-generated content',
+        head: branchName,
+        base: 'main',
+      },
+      authConfig
+    );
+
+    console.log('pcr', prCreateResp);
   }
 
   //   if (authData === "") {
