@@ -42,13 +42,13 @@ const Home: NextPage = () => {
   }, [showResults, resultsRef]);
 
   return (
-    <Layout title="SERA | Software Engineering User Research Tool">
+    <Layout title="SERA | Software Engineering Research Assistant">
       <main className="flex-col flex-1 pb-8">
         <div className="flex flex-col items-center justify-center pb-36 space-y-14 md:space-y-44 min-h-[calc(100vh-56px)]">
           <h1 className="text-6xl font-bold">SERA</h1>
 
           <p className="max-w-3xl text-xl text-center">
-            SERA is a tool to help <b>software engineering researchers</b>{' '}
+            SERA (Software Engineering Research Assistant) is a tool to help <b>human-centric software engineering researchers</b>{' '}
             better understand the diverse cohorts they are studying, and to
             share best practices for conducting research with various user
             cohorts.
